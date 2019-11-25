@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.shop.provider.mapper.TbClassificationMapper">
+  <resultMap id="BaseResultMap" type="com.study.shop.provider.domain.TbClassification">
+    <!--@mbg.generated generated on Tue Nov 19 14:34:46 GMT+08:00 2019.-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    <result column="is_parent" jdbcType="BOOLEAN" property="isParent" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Tue Nov 19 14:34:46 GMT+08:00 2019.-->
+    id, parent_id, `name`, `status`, sort_order, is_parent, remark
+  </sql>
+</mapper>
