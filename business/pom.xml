@@ -12,7 +12,7 @@
     <artifactId>business</artifactId>
     <packaging>pom</packaging>
     <dependencies>
-    <!-- Spring Cloud -->
+        <!-- Spring Cloud -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -60,5 +60,6 @@
         <module>reg-service</module>
         <module>profile-feign</module>
         <module>profile-service</module>
+        <module>websocket-service</module>
     </modules>
 </project>
