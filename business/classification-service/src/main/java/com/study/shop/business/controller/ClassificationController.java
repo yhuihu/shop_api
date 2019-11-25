@@ -29,6 +29,8 @@ public class ClassificationController {
     @GetMapping()
     public ResponseResult getClassification(@RequestParam(name = "id", defaultValue = "0", required = false) Long classificationId,
                                             @RequestParam(name = "parentId", defaultValue = "0", required = false) int parentId) {
+        System.out.println("id:" + classificationId);
+        System.out.println("parentId:" + parentId);
         if (classificationId == 0) {
             return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取分类信息", tbClassificationService.getClassificationList((long) parentId));
         } else {
