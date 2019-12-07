@@ -4,7 +4,7 @@ base:
       hostname: localhost
       port: 9001
     nacos:
-      hostname: 192.168.133.128
+      hostname: my.service.com
       port: 8848
     sentile:
       hostname: my.service.com
@@ -62,7 +62,4 @@ alipay:
   format: json
   signtype: RSA2
   gateway-url: https://openapi.alipaydev.com/gateway.do
-  alipayCert: D:\JavaWeb\微服务\graduated\shop\business\alipay-service\src\main\resources\CRT\alipayCertPublicKey.crt
-  alipayRoot: D:\JavaWeb\微服务\graduated\shop\business\alipay-service\src\main\resources\CRT\alipayRootCert.crt
-  appCert: D:\JavaWeb\微服务\graduated\shop\business\alipay-service\src\main\resources\CRT\appCertPublicKey.crt
   appPrivateKey: MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCo+To7aNzNQJ68vCtaTqR7tTOBgi8cjFIaBI644UIXOqq9O538oyVfD0aLrv9dSGcqRtozq+G8OvSBvFmEIjWntU3IMf8rerWhaonHNhxpR0ELdJVO9wxt15W18XaBxDMJ2YZO++ACsV6OyCPvsHK501dkwwCAGj5sILD/zBfeUIfgniQuLpxaBxiuAnzC7zoAu+JxOM3bdokydHflKCKQYT0C/iX6myOXJepzWeYl4d2EMDC2ci+O5uQ+HChi6ywpmOXuQoEY5OB91I9A9uS29XhWk3U+QXP+d2rNKctsjQqtgdZnI39LZXXn8CviY+0n06EKdvG0WnoeT2PU3r/zAgMBAAECggEBAJN7xTnpkx+LkYGGdAiEr8hSJjyZ1mkCiP6wj6oK4tbHnBNDH+hMtee8u4RcIAPZmEIsSXPkSEk05AkAztknytEwzE06ZlAa8MGM7ej07+NsD/fhsBiWRUDydHez5A3ro+iq9jGmYqW3DqNtSQCCcACF2LfYBG3LekSCXDtIdmTRUMoriQ23v05cIFHk7S9JohxmbHm6QnPUsChjxRpHdb/fXj9lh/nGSrUAb5HBlvnmDQ3mKSsrYmHEgB4ZHv/ge1kQGWJ3N0aZUZIZpkXFq1dv4whtFacTq+HshKuDlWuJjOL1BoogVsH18FUS+HgXx2tCVrNV81ILfu/ed/zrERECgYEA96a0zGO1VHo9qFSyL71bg3APvh8fFCsCWT9GAG5XRGYGgX4iWMnQNKAZjQqBGBOu7uP3axftVKr6hhC57AsT3kpxhhXhaqs/R94GFgvGBTO/lL9MsXwYt2qcTV4AB8yIB1+dJAZ+Spp1R682bkMrPhZsJoUWY4XRihiDLW8SFL0CgYEArquDRa/Zxijc+/Zd3YfML5+pmtrIrPX+9/C6tYT0nfAdrdIofDv63MxW12X1pmB6PQaM0tMVi7KwuH8ZMVsqAOW8Lao1awpaiyNZnGniV+LTYlKvuH0dvadJQpRjW6OtFDgJOhw7HiSWaY0tyf7+QXGUuYkf5rs+62grQIYP6m8CgYEAqz5uBGrp5wlD+1Ldh59TWVayvA9/CQ4YaKgU+pVR6Kz30LDshSK/wrP2Fw3taD2sF+owmrAH3yT/aJbGSQ775Rjq2QHmRkE117cR1Eq92bkHv45sNMoPuTyR6fmW4c2vPhICcfe/ekzFzhS8+Y+epicRD621ZooQ84Gxq0gDY60CgYAlnpUIVkZ+EmD992LiCpRkkWuzCXn9HoJKnlNoMvmIZqXNwRytHTH7ihsOC0ysB81sBVQhOAtE6jh7lAw2AB98z/4Gi8kzg6hanUN4l6mDKjxCyfJEttXH+haiO1lm7EqjtyntlRT6egDXPOvmvH/AUpkomKsBQ8TaaLYgEH+vCwKBgQCcTYtW2Vg88Rio15A8ZPYuCvduq7GRffnBQacZ7MW++X+vOrvz0Z1qxC2yRwhF2TKQhtLcyDOR63scdq12OeLhQAJh5nvz66x3Oz8adLzWzkpAdb7cPrU5N45Rvz9/YG/g+yo5jrzrBiF0NSYWfz4xbCbYmHd3o746x4NtZfnJ7A==

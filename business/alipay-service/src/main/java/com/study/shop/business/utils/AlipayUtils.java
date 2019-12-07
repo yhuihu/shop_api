@@ -1,7 +1,6 @@
 package com.study.shop.business.utils;
 
 import com.alipay.api.AlipayClient;
-import com.alipay.api.CertAlipayRequest;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.alipay.api.request.AlipayTradePagePayRequest;
@@ -19,30 +18,6 @@ import javax.annotation.Resource;
 public class AlipayUtils {
     @Resource
     private AlipayConfiguration alipayConfiguration;
-
-    public CertAlipayRequest getCertAlipayRequest() {
-        //构造client
-        CertAlipayRequest certAlipayRequest = new CertAlipayRequest();
-        //设置网关地址
-        certAlipayRequest.setServerUrl(alipayConfiguration.getGatewayUrl());
-        //设置应用Id
-        certAlipayRequest.setAppId(alipayConfiguration.getAppId());
-        //设置应用私钥
-        certAlipayRequest.setPrivateKey(alipayConfiguration.getAppPrivateKey());
-        //设置请求格式，固定值json
-        certAlipayRequest.setFormat(alipayConfiguration.getFormat());
-        //设置字符集
-        certAlipayRequest.setCharset(alipayConfiguration.getCharset());
-        //设置签名类型
-        certAlipayRequest.setSignType(alipayConfiguration.getSigntype());
-        //设置应用公钥证书路径
-        certAlipayRequest.setCertPath(alipayConfiguration.getAppCert());
-        //设置支付宝公钥证书路径
-        certAlipayRequest.setAlipayPublicCertPath(alipayConfiguration.getAlipayCert());
-        //设置支付宝根证书路径
-        certAlipayRequest.setRootCertPath(alipayConfiguration.getAlipayRoot());
-        return certAlipayRequest;
-    }
 
     public AlipayClient getNormalClient(){
         String zfbPublicKey="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzdknbgMbM7Bxs+/47EYle4N7qzXGizBQvprMR+8IHuxbFWRjqFNEVA7j8MUYTe+fE4JNT6XWDDl8assP/QKUA4/EBVtnmXv7ASeZR262wpW0aF8UpS7b2mwtcEoMOj26y6UVOFgbgT+8ynnW88MBXX/mUcZ11ohIdVJT6yJwRMCLfqKR0FaJMiv+lW4Dsp83vO7kpSJNdwVreUaeuCZ9KM8swAqh1vRfuBqT5PJD8G6TEhvJQBWGH7lzapaJ6Kfh91HEBMCEzqA1/np5Z02pdH0D81pGOtUSTbjwHlOQnge8W42fucF/EGQDQ/ZQpwWziGMfwOaGswwwMrzKs7DmeQIDAQAB";
