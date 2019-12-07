@@ -68,7 +68,6 @@
         <module>reg-service</module>
         <module>profile-feign</module>
         <module>profile-service</module>
-        <module>websocket-service</module>
         <module>alipay-service</module>
     </modules>
 </project>
