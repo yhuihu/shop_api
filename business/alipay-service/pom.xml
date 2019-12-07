@@ -48,12 +48,6 @@
             <version>4.8.56.ALL</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.study</groupId>
-            <artifactId>upload-feign</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
     </dependencies>
 
     <build>
