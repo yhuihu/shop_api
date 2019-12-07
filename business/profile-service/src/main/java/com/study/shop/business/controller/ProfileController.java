@@ -11,7 +11,6 @@ import com.study.shop.provider.api.TbUserService;
 import com.study.shop.provider.domain.TbUser;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,7 +43,6 @@ public class ProfileController {
      * @return {@link ResponseResult}
      */
     @GetMapping(value = "info")
-    @PreAuthorize("hasAuthority('USER')")
     @SentinelResource(value = "info", fallback = "infoFallback", fallbackClass = ProfileControllerFallback.class)
     public ResponseResult<UserInfo> info() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

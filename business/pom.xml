@@ -53,6 +53,14 @@
             <artifactId>configuration-feign</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
     </dependencies>
     <modules>
         <module>oauth2-service</module>
@@ -61,5 +69,6 @@
         <module>profile-feign</module>
         <module>profile-service</module>
         <module>websocket-service</module>
+        <module>alipay-service</module>
     </modules>
 </project>

@@ -7,9 +7,10 @@ import com.study.shop.business.dto.LoginInfo;
 import com.study.shop.business.dto.LoginParam;
 import com.study.shop.business.feign.ProfileFeign;
 import com.study.shop.commons.dto.ResponseResult;
+import com.study.shop.provider.domain.TbUser;
 import com.study.shop.utils.MapperUtils;
 import com.study.shop.utils.OkHttpClientUtil;
-import com.study.shop.provider.domain.TbUser;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,7 @@ public class UserController {
     private RedisTemplate<String, String> redisTemplate;
 
     @PostMapping(value = "/login")
+    @ApiOperation(value = "1、用户登录", notes = "使用账号密码登录", httpMethod = "POST")
     public ResponseResult<Map<String, Object>> login(@RequestBody LoginParam loginParam) {
         Map<String, Object> result = Maps.newHashMap();
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginParam.getUsername());

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.shop.provider.mapper.TbItemMapper">
+    <resultMap id="BaseResultMap" type="com.study.shop.provider.domain.TbItem">
+        <!--@mbg.generated generated on Fri Dec 06 13:00:34 GMT+08:00 2019.-->
+        <!--@Table tb_item-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="sell_point" jdbcType="VARCHAR" property="sellPoint"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="cid" jdbcType="BIGINT" property="cid"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"/>
+        <result column="updated" jdbcType="TIMESTAMP" property="updated"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Fri Dec 06 13:00:34 GMT+08:00 2019.-->
+        id, title, sell_point, price, image, cid, `status`, created, updated
+    </sql>
+    <select id="searchRecommend" resultType="java.lang.String">
+         SELECT `title` FROM `tb_item`  where `title` like concat('%',#{input},'%') group by `title`
+    </select>
+</mapper>

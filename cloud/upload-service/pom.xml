@@ -56,6 +56,12 @@
             <artifactId>upload-feign</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>commons-utils</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

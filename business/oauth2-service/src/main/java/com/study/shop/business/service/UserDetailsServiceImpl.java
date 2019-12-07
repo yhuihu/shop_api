@@ -40,6 +40,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 throw new BusinessException(ExceptionStatus.ACCOUNT_LOCK);
             }
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(tbUser.getRole());
+            if("ADMIN".equals(tbUser.getRole())){
+                GrantedAuthority grantedAuthority1 = new SimpleGrantedAuthority("USER");
+                grantedAuthorities.add(grantedAuthority1);
+            }
             grantedAuthorities.add(grantedAuthority);
             return new User(tbUser.getUsername(), tbUser.getPassword(), grantedAuthorities);
         }

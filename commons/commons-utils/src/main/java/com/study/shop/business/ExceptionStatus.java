@@ -7,6 +7,14 @@ package com.study.shop.business;
  **/
 public enum ExceptionStatus {
     /**
+     * 图片内容为空
+     */
+    IMAGE_ERROR(100201, "图片内容为空"),
+    /**
+     * 拒绝的图片格式
+     */
+    TYPE_ERROR(100202, "拒绝的图片格式"),
+    /**
      * 账号密码错误
      */
     PASSWORD_ERROR(100101, "账号或密码错误"),
