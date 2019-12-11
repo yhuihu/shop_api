@@ -16,5 +16,6 @@
         <module>configuration-feign</module>
         <module>configuration-sentinel</module>
         <module>configuration-redis</module>
+        <module>configuration-datasource</module>
     </modules>
 </project>
