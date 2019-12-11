@@ -10,16 +10,16 @@ spring:
     nacos:
       discovery:
         server-addr: my.service.com:8848
-  redis:
-    lettuce:
-      pool:
-        min-idle: 0
-        max-idle: 8
-        max-wait: -1ms
-        max-active: 8
-    cluster:
-      nodes: my.redis.com:7001,my.redis.com:7002,my.redis.com:7003,my.redis.com:7004,my.redis.com:7005,my.redis.com:7006
-    password: yang123(*&
+#  redis:
+#    lettuce:
+#      pool:
+#        min-idle: 0
+#        max-idle: 8
+#        max-wait: -1ms
+#        max-active: 8
+#    cluster:
+#      nodes: my.redis.com:7001,my.redis.com:7002,my.redis.com:7003,my.redis.com:7004,my.redis.com:7005,my.redis.com:7006
+#    password: yang123(*&
 dubbo:
   scan:
     base-packages: com.study.shop.oauth2.controller, com.study.shop.oauth2.service

@@ -37,7 +37,7 @@
         <!-- Projects -->
         <dependency>
             <groupId>com.study</groupId>
-            <artifactId>admin-provider-api</artifactId>
+            <artifactId>user-provider-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
