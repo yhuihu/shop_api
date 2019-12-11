@@ -1,5 +1,6 @@
 package com.study.shop.provider;
 
+import com.study.shop.configuration.DataSourceConfig;
 import com.study.shop.configuration.DubboSentinelConfiguration;
 import com.study.shop.configuration.RedisConfig;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +13,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @date 2019-12-06
  * @see com.study.shop.provider
  **/
-@SpringBootApplication(scanBasePackageClasses = {GoodsProviderApplication.class, DubboSentinelConfiguration.class, RedisConfig.class})
+@SpringBootApplication(scanBasePackageClasses = {GoodsProviderApplication.class, DubboSentinelConfiguration.class, RedisConfig.class, DataSourceConfig.class})
 @MapperScan(basePackages = "com.study.shop.provider.mapper")
 @EnableCaching
 public class GoodsProviderApplication {

@@ -1,5 +1,6 @@
 package com.study.shop.provider;
 
+import com.study.shop.configuration.DataSourceConfig;
 import com.study.shop.configuration.DubboSentinelConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,7 +9,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 /**
  * @author Admin
  */
-@SpringBootApplication(scanBasePackageClasses = {UserProviderApplication.class, DubboSentinelConfiguration.class})
+@SpringBootApplication(scanBasePackageClasses = {UserProviderApplication.class, DubboSentinelConfiguration.class, DataSourceConfig.class})
 @MapperScan(basePackages = "com.study.shop.provider.mapper")
 public class UserProviderApplication {
     public static void main(String[] args) {

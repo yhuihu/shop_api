@@ -12,8 +12,9 @@ import java.util.List;
 public interface TbItemMapper extends Mapper<TbItem> {
     /**
      * 功能描述: 查询推荐
+     *
      * @param input 输入参数
      * @return List<String>
      */
-    List<String> searchRecommend(@Param("input")String input);
+    List<String> searchRecommend(@Param("input") String input);
 }

@@ -88,6 +88,11 @@
             <artifactId>configuration-redis</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>configuration-datasource</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 
     <modules>

@@ -5,12 +5,10 @@ base:
       port: 8848
 spring:
   application:
-    # 应用名称
     name: gateway
   main:
     allow-bean-definition-overriding: true
   cloud:
-    # 使用 Nacos 作为服务注册发现
     nacos:
       discovery:
         server-addr: ${base.config.nacos.hostname}:${base.config.nacos.port}
@@ -50,9 +48,17 @@ spring:
           uri: lb://classification
           predicates:
             - Path=/api/classification/**
+          filters:
+            - StripPrefix=1
+        - id: BUSSINESS-GOODS
+          uri: lb://goods
+          predicates:
+            - Path=/api/goods/**
+          filters:
+            - StripPrefix=1
 server:
   port: 8888
 # 配置日志级别，方别调试
 logging:
   level:
-    org.springframework.cloud.gateway: error
+    org.springframework.cloud.gateway: DEBUG

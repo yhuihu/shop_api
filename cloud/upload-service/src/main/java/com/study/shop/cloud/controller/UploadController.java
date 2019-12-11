@@ -12,7 +12,6 @@ import com.study.shop.business.BusinessException;
 import com.study.shop.business.ExceptionStatus;
 import com.study.shop.cloud.dto.FileInfo;
 import com.study.shop.commons.dto.ResponseResult;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +43,6 @@ public class UploadController {
      * 将图片上传到七牛云
      */
     @PostMapping()
-    @ApiOperation(value = "图片上传", notes = "上传图片使用", httpMethod = "POST")
     public ResponseResult uploadFile(MultipartFile multipartFile) throws NullPointerException, IOException {
         if (multipartFile == null) {
             throw new BusinessException(ExceptionStatus.IMAGE_ERROR);

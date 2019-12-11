@@ -3,31 +3,31 @@ spring:
     name: classification-provider
   main:
     allow-bean-definition-overriding: true
-  redis:
-    lettuce:
-      pool:
-        min-idle: 0
-        max-idle: 8
-        max-wait: -1ms
-        max-active: 8
-    cluster:
-      nodes: my.redis.com:7001,my.redis.com:7002,my.redis.com:7003,my.redis.com:7004,my.redis.com:7005,my.redis.com:7006
-    password: yang123(*&
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://my.service.com:3306/secondMall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
-    username: root
-    password: 123456
-    hikari:
-      auto-commit: true
-      minimum-idle: 5
-      idle-timeout: 60000
-      maximum-pool-size: 10
-      pool-name: MyHikariCP
-      max-lifetime: 1800000
-      connection-timeout: 6000
-      connection-test-query: SELECT 1
+#  redis:
+#    lettuce:
+#      pool:
+#        min-idle: 0
+#        max-idle: 8
+#        max-wait: -1ms
+#        max-active: 8
+#    cluster:
+#      nodes: my.redis.com:7001,my.redis.com:7002,my.redis.com:7003,my.redis.com:7004,my.redis.com:7005,my.redis.com:7006
+#    password: yang123(*&
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://my.service.com:3306/secondMall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+#    username: root
+#    password: 123456
+#    hikari:
+#      auto-commit: true
+#      minimum-idle: 5
+#      idle-timeout: 60000
+#      maximum-pool-size: 10
+#      pool-name: MyHikariCP
+#      max-lifetime: 1800000
+#      connection-timeout: 6000
+#      connection-test-query: SELECT 1
 dubbo:
   scan:
     base-packages: com.study.shop.provider.service

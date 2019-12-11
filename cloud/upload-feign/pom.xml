@@ -11,12 +11,4 @@
 
     <artifactId>upload-feign</artifactId>
     <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>com.study</groupId>
-            <artifactId>commons-utils</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 </project>

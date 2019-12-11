@@ -4,21 +4,21 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://my.service.com:3306/secondMall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
-    username: root
-    password: 123456
-    hikari:
-      auto-commit: true
-      minimum-idle: 5
-      idle-timeout: 60000
-      maximum-pool-size: 10
-      pool-name: MyHikariCP
-      max-lifetime: 1800000
-      connection-timeout: 6000
-      connection-test-query: SELECT 1
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://my.service.com:3306/secondMall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+#    username: root
+#    password: 123456
+#    hikari:
+#      auto-commit: true
+#      minimum-idle: 5
+#      idle-timeout: 60000
+#      maximum-pool-size: 10
+#      pool-name: MyHikariCP
+#      max-lifetime: 1800000
+#      connection-timeout: 6000
+#      connection-test-query: SELECT 1
 dubbo:
   scan:
     base-packages: com.study.shop.provider.service
