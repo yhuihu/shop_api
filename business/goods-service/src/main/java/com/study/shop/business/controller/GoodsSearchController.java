@@ -1,12 +1,14 @@
 package com.study.shop.business.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.study.shop.commons.dto.ResponseResult;
 import com.study.shop.provider.api.TbItemService;
+import com.study.shop.provider.dto.GoodsSearchDTO;
+import com.study.shop.provider.vo.GoodsVO;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,12 +30,7 @@ public class GoodsSearchController {
     }
 
     @GetMapping()
-    public ResponseResult searchGoods(@RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
-                                      @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
-                                      @RequestParam(name = "sort", required = false, defaultValue = "0") Integer sort,
-                                      @RequestParam(name = "priceGt", required = false, defaultValue = "0") Double priceGt,
-                                      @RequestParam(name = "priceLt", required = false, defaultValue = "0") Double priceLt,
-                                      @RequestParam(name = "keyword", required = false) String keyword) {
-        return new ResponseResult(ResponseResult.CodeStatus.OK, tbItemService.searchItem(page, size, sort, priceGt, priceLt, keyword));
+    public ResponseResult<PageInfo<GoodsVO>> searchGoods(GoodsSearchDTO goodsSearchDTO) {
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK, tbItemService.searchItem(goodsSearchDTO));
     }
 }

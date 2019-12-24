@@ -15,12 +15,66 @@
         <result column="updated" jdbcType="TIMESTAMP" property="updated"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
     </resultMap>
+
+    <resultMap id="GoodsList" type="com.study.shop.provider.vo.GoodsVO">
+        <!--@mbg.generated-->
+        <!--@Table tb_item-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="sell_point" jdbcType="VARCHAR" property="sellPoint"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="classification_id" jdbcType="BIGINT" property="classificationId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"/>
+        <result column="updated" jdbcType="TIMESTAMP" property="updated"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+    </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         id, title, sell_point, price, image, classification_id, `status`, created, updated,
         user_id
     </sql>
+
     <select id="searchRecommend" resultType="java.lang.String">
         SELECT distinct `title` FROM `tb_item` where `title` like concat('%',#{input},'%')
+    </select>
+
+    <select id="getGoodList" resultType="com.study.shop.provider.vo.GoodsVO"
+            parameterType="com.study.shop.provider.dto.GoodsSearchDTO" resultMap="GoodsList">
+        SELECT
+        ti.id, ti.title, ti.sell_point, ti.price, ti.image, ti.classification_id, ti.status, ti.created, ti.updated,
+        ti.user_id,tu.nick_name,tu.address,tu.icon
+        from `tb_item` as ti left join tb_user tu
+        on ti.user_id = tu.id
+        where 1=1
+        <if test="priceGt != null">
+            and ti.price &gt;= #{priceGt}
+        </if>
+        <if test="priceLt != null">
+            and ti.price &lt;= #{priceLt}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and (ti.title like concat('%',#{keyword},'%') or ti.sell_point like concat('%',#{keyword},'%'))
+        </if>
+        <if test="classificationId != null">
+            and ti.classification_id = #{classificationId}
+        </if>
+        <choose>
+            <when test="sort != null">
+                <if test="sort==1">
+                    order by price asc
+                </if>
+                <if test="sort==-1">
+                    order by price desc
+                </if>
+            </when>
+            <otherwise>
+                order by created desc
+            </otherwise>
+        </choose>
     </select>
 </mapper>

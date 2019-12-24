@@ -39,12 +39,12 @@ public class RedisConfig {
     public LettuceConnectionFactory lettuceConnectionFactory(GenericObjectPoolConfig genericObjectPoolConfig) {
         RedisClusterConfiguration redisConfiguration = new RedisClusterConfiguration();
         List<RedisNode> nodeList = new ArrayList<>();
-        nodeList.add(new RedisNode("my.redis.com",7001));
-        nodeList.add(new RedisNode("my.redis.com",7002));
-        nodeList.add(new RedisNode("my.redis.com",7003));
-        nodeList.add(new RedisNode("my.redis.com",7004));
-        nodeList.add(new RedisNode("my.redis.com",7005));
-        nodeList.add(new RedisNode("my.redis.com",7006));
+        nodeList.add(new RedisNode("my.service.com",7001));
+        nodeList.add(new RedisNode("my.service.com",7002));
+        nodeList.add(new RedisNode("my.service.com",7003));
+        nodeList.add(new RedisNode("my.service.com",7004));
+        nodeList.add(new RedisNode("my.service.com",7005));
+        nodeList.add(new RedisNode("my.service.com",7006));
         redisConfiguration.setClusterNodes(nodeList);
         redisConfiguration.setPassword("yang123(*&");
         LettuceClientConfiguration clientConfig = LettucePoolingClientConfiguration.builder()

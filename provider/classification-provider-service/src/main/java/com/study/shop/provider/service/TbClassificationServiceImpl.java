@@ -4,7 +4,6 @@ import com.study.shop.provider.api.TbClassificationService;
 import com.study.shop.provider.domain.TbClassification;
 import com.study.shop.provider.mapper.TbClassificationMapper;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
@@ -65,7 +64,6 @@ public class TbClassificationServiceImpl implements TbClassificationService {
     }
 
     @Override
-    @CacheEvict
     public void deleteClassification(Long id) {
         deleteTree(id);
         Set<String> longSet = redisTemplate.keys(CLASSIFICATION_PARENT_KEY + "*");
