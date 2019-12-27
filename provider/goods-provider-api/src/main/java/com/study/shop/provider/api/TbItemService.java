@@ -2,6 +2,7 @@ package com.study.shop.provider.api;
 
 import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.dto.GoodsSearchDTO;
+import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.provider.vo.GoodsVO;
 
 import java.util.List;
@@ -25,4 +26,11 @@ public interface TbItemService {
      * @return List<TbItem>
      */
     PageInfo<GoodsVO> searchItem(GoodsSearchDTO goodsSearchDTO);
+
+    /**
+     * 功能描述: <br>
+     * @param goodId  Long
+     * @return GoodDetailVO {@link GoodDetailVO}
+     */
+    GoodDetailVO getGoodDetail(Long goodId);
 }

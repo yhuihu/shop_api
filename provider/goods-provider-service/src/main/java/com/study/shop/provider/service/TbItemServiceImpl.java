@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.api.TbItemService;
 import com.study.shop.provider.dto.GoodsSearchDTO;
 import com.study.shop.provider.mapper.TbItemMapper;
+import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.provider.vo.GoodsVO;
 import org.apache.dubbo.config.annotation.Service;
 
@@ -36,5 +37,10 @@ public class TbItemServiceImpl implements TbItemService {
         PageHelper.startPage(goodsSearchDTO.getPage(), goodsSearchDTO.getSize());
         List<GoodsVO> list = tbItemMapper.getGoodList(goodsSearchDTO);
         return new PageInfo<>(list);
+    }
+
+    @Override
+    public GoodDetailVO getGoodDetail(Long goodId) {
+        return tbItemMapper.getGoodDetail(goodId);
     }
 }

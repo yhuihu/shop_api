@@ -1,6 +1,7 @@
 package com.study.shop.provider.api;
 
 import com.study.shop.provider.domain.TbClassification;
+import com.study.shop.provider.vo.ClassificationVO;
 
 import java.util.List;
 
@@ -25,6 +26,12 @@ public interface TbClassificationService {
      * @return {@link TbClassification}
      */
     List<TbClassification> getClassificationList(Long id);
+
+    /**
+     * 获取所有分类集
+     * @return {@link ClassificationVO}
+     */
+    List<ClassificationVO> getAllClassification();
 
     /**
      * 通过父分类id获取子分类集合

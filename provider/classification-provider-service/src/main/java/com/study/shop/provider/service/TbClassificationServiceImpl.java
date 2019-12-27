@@ -3,6 +3,7 @@ package com.study.shop.provider.service;
 import com.study.shop.provider.api.TbClassificationService;
 import com.study.shop.provider.domain.TbClassification;
 import com.study.shop.provider.mapper.TbClassificationMapper;
+import com.study.shop.provider.vo.ClassificationVO;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
@@ -46,6 +47,11 @@ public class TbClassificationServiceImpl implements TbClassificationService {
         example.setOrderByClause("sort_order");
         example.and().andEqualTo("parentId", id);
         return tbClassificationMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<ClassificationVO> getAllClassification() {
+        return tbClassificationMapper.getClassificationList(0L);
     }
 
     @Override

@@ -32,7 +32,8 @@ public class ClassificationController {
     public ResponseResult getClassification(@RequestParam(name = "id", defaultValue = "0", required = false) Long classificationId,
                                             @RequestParam(name = "parentId", defaultValue = "0", required = false) int parentId) {
         if (classificationId == 0) {
-            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取分类信息", tbClassificationService.getClassificationList((long) parentId));
+//            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取分类信息", tbClassificationService.getClassificationList((long) parentId));
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取分类信息", tbClassificationService.getAllClassification());
         } else {
             return new ResponseResult<>(ResponseResult.CodeStatus.OK, "分类具体信息", tbClassificationService.getClassificationById(classificationId));
         }

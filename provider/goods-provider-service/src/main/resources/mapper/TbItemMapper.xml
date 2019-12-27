@@ -33,6 +33,22 @@
         <result column="icon" jdbcType="VARCHAR" property="icon"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
     </resultMap>
+
+    <resultMap id="GoodDetail" type="com.study.shop.provider.vo.GoodDetailVO">
+        <!--@mbg.generated-->
+        <!--@Table tb_item-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="sell_point" jdbcType="VARCHAR" property="sellPoint"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="classification_id" jdbcType="BIGINT" property="classificationId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"/>
+        <result column="updated" jdbcType="TIMESTAMP" property="updated"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="item_desc" jdbcType="BIGINT" property="itemDesc"/>
+    </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         id, title, sell_point, price, image, classification_id, `status`, created, updated,
@@ -76,5 +92,11 @@
                 order by created desc
             </otherwise>
         </choose>
+    </select>
+    <select id="getGoodDetail" resultType="com.study.shop.provider.vo.GoodDetailVO" resultMap="GoodDetail">
+        SELECT
+            ti.id, ti.title, ti.sell_point, ti.price, ti.image, ti.classification_id, ti.status, ti.created, ti.updated,
+            ti.user_id,td.item_desc
+        from `tb_item` as ti left join tb_item_desc td on ti.id=td.item_id where ti.id = #{goodId}
     </select>
 </mapper>

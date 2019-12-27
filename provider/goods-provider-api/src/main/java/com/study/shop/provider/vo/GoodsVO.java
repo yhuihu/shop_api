@@ -12,7 +12,7 @@ import java.util.Date;
  **/
 @Data
 public class GoodsVO {
-    private Long id;
+    private String id;
 
     /**
      * 商品标题
