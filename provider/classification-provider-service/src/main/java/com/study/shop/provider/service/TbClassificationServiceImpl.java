@@ -88,7 +88,6 @@ public class TbClassificationServiceImpl implements TbClassificationService {
         tbClassificationMapper.deleteByPrimaryKey(id);
     }
 
-
     private void updateParent(Long id) {
         if (id != null) {
             redisTemplate.delete(CLASSIFICATION_PARENT_KEY + id);

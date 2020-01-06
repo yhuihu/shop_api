@@ -74,10 +74,9 @@
     </dependencies>
     <modules>
         <module>oauth2-service</module>
-        <module>reg-feign</module>
-        <module>reg-service</module>
         <module>profile-feign</module>
         <module>profile-service</module>
+        <module>classification-service</module>
         <module>alipay-service</module>
     </modules>
 </project>

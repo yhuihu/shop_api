@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
-
 /**
  * @author Tiger
  * @date 2019-12-11
