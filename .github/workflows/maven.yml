@@ -26,7 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
-        working-directory: ./provider/classification-provider-service
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -36,13 +35,13 @@ jobs:
           -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
           -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
           -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        working-directory: ./provider/classification-provider-service
   goods_provider:
     needs: gateway
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
-        working-directory: ./provider/goods-provider-service
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -52,13 +51,13 @@ jobs:
           -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
           -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
           -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        working-directory: ./provider/goods-provider-service
   user_provider:
     needs: gateway
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
-        working-directory: ./provider/user-provider-service
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -68,13 +67,13 @@ jobs:
           -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
           -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
           -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        working-directory: ./provider/user-provider-service
   cloud:
     needs: gateway
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
-        working-directory: ./cloud/upload-service
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -84,13 +83,13 @@ jobs:
           -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
           -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
           -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        working-directory: ./cloud/upload-service
   classification:
     needs: [gateway,classification_provider]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
-        working-directory: ./business/classification-service
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -100,13 +99,13 @@ jobs:
           -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
           -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
           -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        working-directory: ./business/classification-service
   goods:
     needs: [gateway,goods_provider]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
-        working-directory: ./business/goods-service
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -116,13 +115,13 @@ jobs:
           -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
           -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
           -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        working-directory: ./business/goods-service
   oauth2:
     needs: [gateway,goodsuser_provider]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
-        working-directory: ./business/oauth2-service
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -132,3 +131,4 @@ jobs:
           -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
           -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
           -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        working-directory: ./business/oauth2-service
