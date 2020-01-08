@@ -18,7 +18,6 @@ jobs:
           server-password: MAVEN_PASSWORD # env variable for token in deploy
       - name: Build
         run: mvn package
-        cache: true
         env:
           MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
           MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
