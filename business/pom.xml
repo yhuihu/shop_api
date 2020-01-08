@@ -78,5 +78,6 @@
         <module>profile-service</module>
         <module>classification-service</module>
         <module>alipay-service</module>
+        <module>goods-service</module>
     </modules>
 </project>
