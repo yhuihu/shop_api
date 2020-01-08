@@ -17,7 +17,7 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Build
-        run: mvn package
+        run: mvn package -q -B -V
         env:
           MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
           MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
