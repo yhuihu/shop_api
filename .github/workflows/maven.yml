@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
-        working-directory: ./gateway
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -20,6 +19,7 @@ jobs:
           -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
           -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
           -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        working-directory: ./gateway
   classification_provider:
     needs: gateway
     runs-on: ubuntu-latest
