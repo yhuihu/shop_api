@@ -14,11 +14,8 @@ jobs:
         with:
           java-version: 1.8
       - name: Build Gateway
-        run: mvn package \
-          -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
-          -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        run: mvn package -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        working-directory: ./gateway
   classification_provider:
     needs: gateway
     runs-on: ubuntu-latest
@@ -29,11 +26,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build classification_provider
-        run: mvn package jib:build \
-          -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
-          -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        run: mvn package -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
         working-directory: ./provider/classification-provider-service
   goods_provider:
     needs: gateway
@@ -45,11 +38,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build goods_provider
-        run: mvn package jib:build \
-          -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
-          -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        run: mvn package -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
         working-directory: ./provider/goods-provider-service
   user_provider:
     needs: gateway
@@ -61,11 +50,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build user_provider
-        run: mvn package jib:build \
-          -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
-          -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        run: mvn package -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
         working-directory: ./provider/user-provider-service
   cloud:
     needs: gateway
@@ -77,11 +62,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build cloud
-        run: mvn package jib:build \
-          -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
-          -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        run: mvn package -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
         working-directory: ./cloud/upload-service
   classification:
     needs: [gateway,classification_provider]
@@ -93,11 +74,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build classification
-        run: mvn package jib:build \
-          -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
-          -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        run: mvn package -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
         working-directory: ./business/classification-service
   goods:
     needs: [gateway,goods_provider]
@@ -109,11 +86,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build goods
-        run: mvn package jib:build \
-          -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
-          -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        run: mvn package -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
         working-directory: ./business/goods-service
   oauth2:
     needs: [gateway,user_provider]
@@ -125,9 +98,5 @@ jobs:
         with:
           java-version: 1.8
       - name: Build oauth2
-        run: mvn package jib:build \
-          -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} \
-          -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} \
-          -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+        run: mvn package -Djib.from.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.from.auth.password=${{secrets.DOCKER_PASSWORD}} -Djib.to.auth.username=${{secrets.DOCKER_USERNAME}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
         working-directory: ./business/oauth2-service
