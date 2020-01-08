@@ -14,8 +14,8 @@ jobs:
         with:
           java-version: 1.8
           server-id: registry.cn-hangzhou.aliyuncs.com
-          server-username: MAVEN_USERNAME # env variable for username in deploy
-          server-password: MAVEN_PASSWORD # env variable for token in deploy
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
       - name: Build
         run: mvn package
         env:
