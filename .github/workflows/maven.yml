@@ -117,7 +117,7 @@ jobs:
           -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
         working-directory: ./business/goods-service
   oauth2:
-    needs: [gateway,goodsuser_provider]
+    needs: [gateway,user_provider]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
