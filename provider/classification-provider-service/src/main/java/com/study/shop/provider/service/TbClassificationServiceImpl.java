@@ -5,14 +5,10 @@ import com.study.shop.provider.domain.TbClassification;
 import com.study.shop.provider.mapper.TbClassificationMapper;
 import com.study.shop.provider.vo.ClassificationVO;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Tiger
@@ -21,9 +17,6 @@ import java.util.concurrent.locks.ReentrantLock;
  **/
 @Service(version = "1.0.0", retries = 0, timeout = 10000)
 public class TbClassificationServiceImpl implements TbClassificationService {
-    private Lock lock = new ReentrantLock();
-    @Resource
-    RedisTemplate<String, Object> redisTemplate;
 
     private final String CLASSIFICATION_KEY = "Classification_";
     private final String CLASSIFICATION_PARENT_KEY = "Classification_Parent_";
@@ -33,12 +26,7 @@ public class TbClassificationServiceImpl implements TbClassificationService {
 
     @Override
     public TbClassification getClassificationById(Long id) {
-        TbClassification tbClassification = (TbClassification) redisTemplate.opsForValue().get(CLASSIFICATION_KEY + id);
-        if (tbClassification == null) {
-            tbClassification = tbClassificationMapper.selectByPrimaryKey(id);
-            setClassification(tbClassification);
-        }
-        return tbClassification;
+        return tbClassificationMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -60,7 +48,6 @@ public class TbClassificationServiceImpl implements TbClassificationService {
             tbClassification.setSortOrder(0);
         }
         tbClassification.setStatus(1);
-        updateParent(tbClassification.getParentId());
         return tbClassificationMapper.insert(tbClassification);
     }
 
@@ -72,10 +59,6 @@ public class TbClassificationServiceImpl implements TbClassificationService {
     @Override
     public void deleteClassification(Long id) {
         deleteTree(id);
-        Set<String> longSet = redisTemplate.keys(CLASSIFICATION_PARENT_KEY + "*");
-        if (longSet != null) {
-            redisTemplate.delete(longSet);
-        }
     }
 
     private void deleteTree(Long id) {
@@ -86,18 +69,6 @@ public class TbClassificationServiceImpl implements TbClassificationService {
             }
         }
         tbClassificationMapper.deleteByPrimaryKey(id);
-    }
-
-    private void updateParent(Long id) {
-        if (id != null) {
-            redisTemplate.delete(CLASSIFICATION_PARENT_KEY + id);
-        }
-    }
-
-    private void setClassification(TbClassification tbClassification) {
-        if (tbClassification != null) {
-            redisTemplate.opsForValue().set(CLASSIFICATION_KEY + tbClassification.getId(), tbClassification);
-        }
     }
 
 }

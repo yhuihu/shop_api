@@ -25,7 +25,7 @@ import java.util.List;
  **/
 @Configuration
 public class RedisConfig {
-    @Bean
+        @Bean
     public GenericObjectPoolConfig genericObjectPoolConfig() {
         GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
         genericObjectPoolConfig.setMaxIdle(8);
@@ -67,4 +67,22 @@ public class RedisConfig {
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
+
+//    @Bean
+//    public JedisCluster jedisCluster(){
+//        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+//        jedisPoolConfig.setMaxIdle(32);
+//        jedisPoolConfig.setMaxWaitMillis(8000);
+//        jedisPoolConfig.setMaxTotal(32);
+//        jedisPoolConfig.setMinIdle(0);
+//        jedisPoolConfig.setTestOnBorrow(true);
+//        Set<HostAndPort> nodeList = new LinkedHashSet<HostAndPort>();
+//        nodeList.add(new HostAndPort("my.service.com",7001));
+//        nodeList.add(new HostAndPort("my.service.com",7002));
+//        nodeList.add(new HostAndPort("my.service.com",7003));
+//        nodeList.add(new HostAndPort("my.service.com",7004));
+//        nodeList.add(new HostAndPort("my.service.com",7005));
+//        nodeList.add(new HostAndPort("my.service.com",7006));
+//        return new JedisCluster(nodeList, 5000, 5000, 5,"yang123(*&", jedisPoolConfig);
+//    }
 }

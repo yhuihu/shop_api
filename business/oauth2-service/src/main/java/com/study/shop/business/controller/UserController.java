@@ -90,7 +90,7 @@ public class UserController {
             String userToken = redisTemplate.opsForValue().get(key);
             if (userToken != null) {
                 OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(userToken);
-                if (oAuth2AccessToken!=null) {
+                if (oAuth2AccessToken != null) {
                     tokenStore.removeAccessToken(oAuth2AccessToken);
                 }
                 redisTemplate.delete(key);
@@ -150,5 +150,4 @@ public class UserController {
         tokenStore.removeAccessToken(oAuth2AccessToken);
         return new ResponseResult<Void>(ResponseResult.CodeStatus.OK, "用户已注销");
     }
-
 }
