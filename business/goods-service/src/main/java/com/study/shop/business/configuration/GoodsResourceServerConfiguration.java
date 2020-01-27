@@ -25,6 +25,7 @@ public class GoodsResourceServerConfiguration extends ResourceServerConfigurerAd
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/cart/**").hasAuthority("USER")
                 .antMatchers("/**").permitAll();
     }
 

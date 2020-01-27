@@ -35,6 +35,11 @@ public enum ExceptionStatus {
     UPDATE_ERROR(600102, "数据库更新失败"),
 
     /**
+     * Redis操作异常
+     */
+    REDIS_ERROR(700101, "服务器操作异常"),
+
+    /**
      * 未知错误
      */
     UNKNOWN(-1, "未知错误"),
@@ -53,6 +58,11 @@ public enum ExceptionStatus {
      * 熔断请求
      */
     BREAKING(20002, "熔断"),
+
+    /**
+     * 参数错误
+     */
+    VALID(20003, "参数错误"),
 
     /**
      * 非法请求
