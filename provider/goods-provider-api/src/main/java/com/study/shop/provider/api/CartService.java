@@ -3,6 +3,7 @@ package com.study.shop.provider.api;
 import com.study.shop.provider.domain.Cart;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Tiger
@@ -25,5 +26,5 @@ public interface CartService {
      * @param username 用户名
      * @return CartData {@link Cart}
      */
-    List<Cart> getAllCart(String username);
+    List<Cart> getAllCart(String username) throws ExecutionException, InterruptedException;
 }

@@ -33,4 +33,11 @@ public interface TbItemService {
      * @return GoodDetailVO {@link GoodDetailVO}
      */
     GoodDetailVO getGoodDetail(Long goodId);
+
+    /**
+     * 获取购物车所有商品信息
+     * @param productIdList 商品编号
+     * @return List<GoodsVO>
+     */
+    List<GoodsVO> getCartDetail(List<Long> productIdList);
 }

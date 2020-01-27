@@ -43,4 +43,9 @@ public class TbItemServiceImpl implements TbItemService {
     public GoodDetailVO getGoodDetail(Long goodId) {
         return tbItemMapper.getGoodDetail(goodId);
     }
+
+    @Override
+    public List<GoodsVO> getCartDetail(List<Long> productIdList) {
+        return tbItemMapper.getCartDetail(productIdList);
+    }
 }

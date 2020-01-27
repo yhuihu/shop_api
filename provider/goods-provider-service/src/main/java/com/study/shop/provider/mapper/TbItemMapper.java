@@ -36,4 +36,11 @@ public interface TbItemMapper extends Mapper<TbItem> {
      * @return GoodDetailVO {@link GoodDetailVO}
      */
     GoodDetailVO getGoodDetail(Long goodId);
+
+    /**
+     * 获取详情数据集
+     * @param productIds id数据集
+     * @return List<GoodsVO>
+     */
+    List<GoodsVO> getCartDetail(List<Long> productIds);
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Tiger
@@ -41,7 +42,7 @@ public class CartController {
     }
 
     @GetMapping()
-    public ResponseResult getAllCart() {
+    public ResponseResult getAllCart() throws ExecutionException, InterruptedException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<Cart> allCart = cartService.getAllCart(authentication.getName());
         return new ResponseResult<>(ResponseResult.CodeStatus.OK, allCart);
