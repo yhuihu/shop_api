@@ -62,6 +62,12 @@ spring:
             - Path=/api/cart/**
           filters:
             - StripPrefix=1
+        - id: BUSSINESS-ADDRESS
+          uri: lb://profile
+          predicates:
+            - Path=/api/address/**
+          filters:
+            - StripPrefix=1
 server:
   port: 8888
 # 配置日志级别，方别调试

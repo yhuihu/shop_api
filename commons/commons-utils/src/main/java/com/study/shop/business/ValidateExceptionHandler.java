@@ -2,7 +2,6 @@ package com.study.shop.business;
 
 import com.study.shop.commons.dto.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -11,9 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.stream.Collectors;
 
 /**
  * @author Tiger
@@ -31,7 +28,7 @@ public class ValidateExceptionHandler {
     @ExceptionHandler(BindException.class)
     @ResponseBody
     public ResponseEntity bindExceptionHandler(BindException e) {
-        String message = e.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining());
+        String message = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         return new ResponseEntity<>(setError(message), HttpStatus.OK);
     }
 
@@ -43,7 +40,7 @@ public class ValidateExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     public ResponseEntity constraintViolationExceptionHandler(ConstraintViolationException e) {
-        String message = e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
+        String message = e.getConstraintViolations().iterator().next().getMessage();
         return new ResponseEntity<>(setError(message), HttpStatus.OK);
     }
 
@@ -55,7 +52,7 @@ public class ValidateExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ResponseEntity methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
-        String message = e.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining());
+        String message =e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         return new ResponseEntity<>(setError(message), HttpStatus.OK);
     }
 

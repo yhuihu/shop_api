@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.shop.provider.mapper.TbAddressMapper">
+  <resultMap id="BaseResultMap" type="com.study.shop.provider.domain.TbAddress">
+    <!--@mbg.generated generated on Wed Jan 29 15:14:06 GMT+08:00 2020.-->
+    <!--@Table tb_address-->
+    <id column="address_id" jdbcType="BIGINT" property="addressId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="street_name" jdbcType="VARCHAR" property="streetName" />
+    <result column="is_default" jdbcType="BOOLEAN" property="isDefault" />
+  </resultMap>
+  <resultMap id="selectAllAddress" type="com.study.shop.provider.vo.TbAddressVO">
+    <!--@mbg.generated generated on Wed Jan 29 15:14:06 GMT+08:00 2020.-->
+    <!--@Table tb_address-->
+    <id column="address_id" property="addressId" />
+    <result column="user_id" property="userId" />
+    <result column="tel" property="tel" />
+    <result column="street_name" property="streetName" />
+    <result column="is_default" property="isDefault" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Wed Jan 29 15:14:06 GMT+08:00 2020.-->
+    address_id, user_id, tel, street_name, is_default
+  </sql>
+  <select id="selectAllAddress" resultMap="selectAllAddress" resultType="com.study.shop.provider.vo.TbAddressVO">
+    SELECT * from `tb_address` where
+    user_id = #{id}
+  </select>
+</mapper>
