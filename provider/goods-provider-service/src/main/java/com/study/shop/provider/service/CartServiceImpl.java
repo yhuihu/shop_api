@@ -58,20 +58,20 @@ public class CartServiceImpl implements CartService {
         String key = CART_KEY + username;
         HashOperations<String, String, Cart> hashOperations = redisTemplate.opsForHash();
         List<Cart> values = hashOperations.values(key);
-        List<Long> longList=new ArrayList<>(values.size());
-        values.forEach(item->{
+        List<Long> longList = new ArrayList<>(values.size());
+        values.forEach(item -> {
             longList.add(Long.valueOf(item.getProductId()));
         });
-        List<GoodsVO> cartDetail = tbItemService.getCartDetail(longList);
-        Map<String,GoodsVO> cartMap=cartDetail.stream().collect(Collectors.toMap(GoodsVO::getId,goodsVO -> goodsVO));
-        for (Cart value : values) {
-            GoodsVO goodsVO = cartMap.get(value.getProductId());
-            value.setProductName(goodsVO.getTitle());
-            value.setSalePrice(goodsVO.getPrice());
-            value.setProductImg(goodsVO.getImage().split(",")[0]);
+        if (!longList.isEmpty()) {
+            List<GoodsVO> cartDetail = tbItemService.getCartDetail(longList);
+            Map<String, GoodsVO> cartMap = cartDetail.stream().collect(Collectors.toMap(GoodsVO::getId, goodsVO -> goodsVO));
+            for (Cart value : values) {
+                GoodsVO goodsVO = cartMap.get(value.getProductId());
+                value.setProductName(goodsVO.getTitle());
+                value.setSalePrice(goodsVO.getPrice());
+                value.setProductImg(goodsVO.getImage().split(",")[0]);
+            }
         }
         return values;
     }
-
-
 }

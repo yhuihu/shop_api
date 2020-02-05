@@ -18,6 +18,8 @@ public class AddressDTO {
     private Long addressId;
     @NotBlank(message = "手机号错误")
     private String tel;
+    @NotBlank(message = "姓名不能为空")
+    private String userName;
     @NotBlank(message = "地址不能为空")
     private String streetName;
     @NotNull(message = "默认值参数错误")

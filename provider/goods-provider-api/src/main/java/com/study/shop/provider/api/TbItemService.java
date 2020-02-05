@@ -1,6 +1,7 @@
 package com.study.shop.provider.api;
 
 import com.github.pagehelper.PageInfo;
+import com.study.shop.provider.domain.TbItem;
 import com.study.shop.provider.dto.GoodsSearchDTO;
 import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.provider.vo.GoodsVO;
@@ -40,4 +41,13 @@ public interface TbItemService {
      * @return List<GoodsVO>
      */
     List<GoodsVO> getCartDetail(List<Long> productIdList);
+
+    /**
+     * 用户发布闲置物品
+     * @param username 用户名
+     * @param tbItem 实体
+     * @param desc 商品描述
+     * @return int 0,1
+     */
+    int addGoods(String username, TbItem tbItem,String desc);
 }

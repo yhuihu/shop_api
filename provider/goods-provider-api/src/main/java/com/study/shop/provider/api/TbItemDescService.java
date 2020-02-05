@@ -20,4 +20,11 @@ public interface TbItemDescService{
      * @return int
      */
     int updateItemDesc(TbItemDesc tbItemDesc);
+
+    /**
+     * 插入商品表述
+     * @param tbItemDesc 商品表述实体
+     * @return 0,1
+     */
+    int insertItemDesc(TbItemDesc tbItemDesc);
 }

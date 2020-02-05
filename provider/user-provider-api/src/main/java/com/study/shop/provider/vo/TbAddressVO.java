@@ -19,6 +19,8 @@ public class TbAddressVO implements Serializable {
 
     private String tel;
 
+    private String userName;
+
     private String streetName;
 
     private Boolean isDefault;

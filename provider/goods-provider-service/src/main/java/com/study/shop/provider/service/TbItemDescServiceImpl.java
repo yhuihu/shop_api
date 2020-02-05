@@ -26,4 +26,9 @@ public class TbItemDescServiceImpl implements TbItemDescService {
     public int updateItemDesc(TbItemDesc tbItemDesc) {
         return tbItemDescMapper.updateByPrimaryKey(tbItemDesc);
     }
+
+    @Override
+    public int insertItemDesc(TbItemDesc tbItemDesc) {
+        return tbItemDescMapper.insert(tbItemDesc);
+    }
 }

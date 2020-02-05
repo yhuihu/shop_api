@@ -15,6 +15,7 @@ import com.study.shop.commons.dto.ResponseResult;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,7 +44,7 @@ public class UploadController {
      * 将图片上传到七牛云
      */
     @PostMapping()
-    public ResponseResult uploadFile(MultipartFile multipartFile) throws NullPointerException, IOException {
+    public ResponseResult uploadFile(@RequestParam(value = "file", required = true) MultipartFile multipartFile) throws NullPointerException, IOException {
         if (multipartFile == null) {
             throw new BusinessException(ExceptionStatus.IMAGE_ERROR);
         }
