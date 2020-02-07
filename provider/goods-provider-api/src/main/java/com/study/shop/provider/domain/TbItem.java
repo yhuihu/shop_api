@@ -2,6 +2,8 @@ package com.study.shop.provider.domain;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,6 +13,8 @@ public class TbItem implements Serializable {
     /**
      * 商品id，同时也是商品编号
      */
+    @Id
+    @Column(name = "id")
     private Long id;
 
     /**

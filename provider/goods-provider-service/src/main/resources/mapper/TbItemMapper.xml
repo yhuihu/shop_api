@@ -95,8 +95,8 @@
     </select>
     <select id="getGoodDetail" resultType="com.study.shop.provider.vo.GoodDetailVO" resultMap="GoodDetail">
         SELECT
-            ti.id, ti.title, ti.sell_point, ti.price, ti.image, ti.classification_id, ti.status, ti.created, ti.updated,
-            ti.user_id,td.item_desc
+        ti.id, ti.title, ti.sell_point, ti.price, ti.image, ti.classification_id, ti.status, ti.created, ti.updated,
+        ti.user_id,td.item_desc
         from `tb_item` as ti left join tb_item_desc td on ti.id=td.item_id where ti.id = #{goodId}
     </select>
     <select id="getCartDetail" resultMap="GoodsList">
@@ -104,6 +104,10 @@
         <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
+    </select>
+    <select id="getMyGoods" resultType="com.study.shop.provider.vo.GoodsVO"
+            parameterType="com.study.shop.provider.dto.MyGoodsDTO" resultMap="GoodsList">
+        SELECT * from `tb_item` where user_id = #{userId}
     </select>
 
 </mapper>

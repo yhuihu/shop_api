@@ -2,6 +2,7 @@ package com.study.shop.provider.mapper;
 
 import com.study.shop.provider.domain.TbItem;
 import com.study.shop.provider.dto.GoodsSearchDTO;
+import com.study.shop.provider.dto.MyGoodsDTO;
 import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.provider.vo.GoodsVO;
 import org.apache.ibatis.annotations.Param;
@@ -43,4 +44,11 @@ public interface TbItemMapper extends Mapper<TbItem> {
      * @return List<GoodsVO>
      */
     List<GoodsVO> getCartDetail(List<Long> productIds);
+
+    /**
+     * 用户查找自己发布的闲置物品
+     * @param myGoodsDTO 实体
+     * @return List<GoodsVO> {@link GoodsVO}
+     */
+    List<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO);
 }

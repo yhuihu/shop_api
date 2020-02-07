@@ -9,11 +9,15 @@ import com.study.shop.provider.domain.TbItem;
 import com.study.shop.provider.domain.TbItemDesc;
 import com.study.shop.provider.domain.TbUser;
 import com.study.shop.provider.dto.GoodsSearchDTO;
+import com.study.shop.provider.dto.MyGoodsDTO;
 import com.study.shop.provider.mapper.TbItemMapper;
 import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.provider.vo.GoodsVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.beans.BeanUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -22,6 +26,7 @@ import java.util.List;
 /**
  * @author admin
  */
+@Slf4j
 @Service(version = "1.0.0", retries = 0, timeout = 10000)
 public class TbItemServiceImpl implements TbItemService {
 
@@ -63,6 +68,32 @@ public class TbItemServiceImpl implements TbItemService {
     }
 
     @Override
+    public PageInfo<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO) {
+        TbUser tbUser = tbUserService.get(myGoodsDTO.getUsername());
+        myGoodsDTO.setUserId(tbUser.getId());
+        if (myGoodsDTO.getPage() == null) {
+            myGoodsDTO.setPage(1);
+        }
+        if (myGoodsDTO.getSize() == null) {
+            myGoodsDTO.setSize(10);
+        }
+        PageHelper.startPage(myGoodsDTO.getPage(), myGoodsDTO.getSize());
+        List<GoodsVO> myGoods = tbItemMapper.getMyGoods(myGoodsDTO);
+        return new PageInfo<>(myGoods);
+    }
+
+    @Override
+    public GoodDetailVO getMyGoodsDetail(String username, Long goodsId) {
+        TbUser tbUser = tbUserService.get(username);
+        GoodDetailVO goodDetail = tbItemMapper.getGoodDetail(goodsId);
+        if (!goodDetail.getUserId().equals(tbUser.getId())) {
+            return null;
+        } else {
+            return goodDetail;
+        }
+    }
+
+    @Override
     public int addGoods(String username, TbItem tbItem, String desc) {
         TbUser tbUser = tbUserService.get(username);
         tbItem.setUserId(tbUser.getId());
@@ -84,6 +115,47 @@ public class TbItemServiceImpl implements TbItemService {
             }
         } catch (Exception e) {
             return 0;
+        }
+    }
+
+    @Override
+    public int deleteGoods(String username, Long goodsId) {
+        TbUser tbUser = tbUserService.get(username);
+        Example example = new Example(TbItem.class);
+        example.createCriteria().andEqualTo("id", goodsId);
+        TbItem tbItem = tbItemMapper.selectOneByExample(example);
+        if (!tbItem.getUserId().equals(tbUser.getId())) {
+            return 0;
+        } else {
+            try {
+                return tbItemMapper.delete(tbItem);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                return 0;
+            }
+        }
+    }
+
+    @Override
+    public int updateMyGoods(String username, TbItem tbItem) {
+        Example example = new Example(TbItem.class);
+        example.createCriteria().andEqualTo("id", tbItem.getId());
+        TbItem tbItem1 = tbItemMapper.selectOneByExample(example);
+        TbUser tbUser = tbUserService.get(username);
+        if (!tbUser.getId().equals(tbItem1.getUserId())) {
+            return 0;
+        }else{
+            Date oldDate=tbItem1.getCreated();
+            BeanUtils.copyProperties(tbItem,tbItem1, "null");
+            try{
+                tbItem1.setUserId(tbUser.getId());
+                tbItem1.setCreated(oldDate);
+                tbItem1.setUpdated(new Date());
+                return tbItemMapper.updateByPrimaryKey(tbItem1);
+            }catch (Exception e){
+                log.error(e.getMessage());
+                return 0;
+            }
         }
     }
 }

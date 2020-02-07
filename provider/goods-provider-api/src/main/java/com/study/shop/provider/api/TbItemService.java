@@ -3,6 +3,7 @@ package com.study.shop.provider.api;
 import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.domain.TbItem;
 import com.study.shop.provider.dto.GoodsSearchDTO;
+import com.study.shop.provider.dto.MyGoodsDTO;
 import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.provider.vo.GoodsVO;
 
@@ -43,6 +44,21 @@ public interface TbItemService {
     List<GoodsVO> getCartDetail(List<Long> productIdList);
 
     /**
+     * 用户获取自己发布的闲置物品
+     * @param myGoodsDTO 实体
+     * @return PageInfo<GoodsVO> {@link GoodsVO}
+     */
+    PageInfo<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO);
+
+    /**
+     * 用户更新时加载数据
+     * @param username 用户名
+     * @param goodsId 商品编号
+     * @return GoodDetailVO {@link GoodDetailVO}
+     */
+    GoodDetailVO getMyGoodsDetail(String username,Long goodsId);
+
+    /**
      * 用户发布闲置物品
      * @param username 用户名
      * @param tbItem 实体
@@ -50,4 +66,20 @@ public interface TbItemService {
      * @return int 0,1
      */
     int addGoods(String username, TbItem tbItem,String desc);
+
+    /**
+     * 用户删除已发布的闲置物品
+     * @param username 用户名
+     * @param goodsId 商品编号
+     * @return 0,1
+     */
+    int deleteGoods(String username,Long goodsId);
+
+    /**
+     * 用户更新自己的闲置物品信息
+     * @param username 用户名
+     * @param tbItem 实体
+     * @return 0,1
+     */
+    int updateMyGoods(String username,TbItem tbItem);
 }
