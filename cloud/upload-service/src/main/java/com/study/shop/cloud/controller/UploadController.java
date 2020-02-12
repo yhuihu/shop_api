@@ -38,7 +38,28 @@ public class UploadController {
     private static final String SECRET_KEY = "";
     private static final String BUCKET = "";
     private static final String DOMAIN = "";
-    private static final List<String> ACCEPT_TYPE = new ArrayList<>(Arrays.asList("jpg", "jpeg", "heic", "png"));
+    private static final List<String> ACCEPT_TYPE = new ArrayList<>(Arrays.asList("jpg", "jpeg", "heic", "png", "bmp"));
+
+    public static boolean checkFileSize(Long len, int size, String unit) {
+        double fileSize = 0;
+        switch (unit.toUpperCase()) {
+            case "B":
+                fileSize = (double) len;
+                break;
+            case "K":
+                fileSize = (double) len / 1024;
+                break;
+            case "M":
+                fileSize = (double) len / 1048576;
+                break;
+            case "G":
+                fileSize = (double) len / 1073741824;
+                break;
+            default:
+                break;
+        }
+        return (fileSize < size);
+    }
 
     /**
      * 将图片上传到七牛云
