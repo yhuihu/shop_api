@@ -95,7 +95,7 @@ public class TbUserServiceImpl implements TbUserService {
         tuser.setUpdateTime(new Date());
         // 初始化状态
         if (tuser.getStatus() == null) {
-            tuser.setStatus(0);
+            tuser.setStatus(1);
         }
         // 密码加密
         tuser.setPassword(passwordEncoder.encode(tuser.getPassword()));

@@ -26,7 +26,7 @@ public class UploadResourceServerConfiguration extends ResourceServerConfigurerA
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll();
+                .antMatchers("/**").hasAuthority("USER");
     }
 
     @Override

@@ -52,6 +52,9 @@ public class UploadController {
         if (!ACCEPT_TYPE.contains(suffix)) {
             throw new BusinessException(ExceptionStatus.TYPE_ERROR);
         }
+        if(checkFileSize(multipartFile.getSize(),5,"M")){
+            throw new BusinessException(ExceptionStatus.SIZE_ERROR);
+        }
         // 构造一个带指定Zone对象的配置类, 注意这里的Zone.zone0需要根据主机选择
         Configuration cfg = new Configuration(Zone.zone2());
         UploadManager uploadManager = new UploadManager(cfg);

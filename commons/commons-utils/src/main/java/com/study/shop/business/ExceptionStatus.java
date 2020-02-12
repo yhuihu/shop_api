@@ -15,6 +15,10 @@ public enum ExceptionStatus {
      */
     TYPE_ERROR(100202, "拒绝的图片格式"),
     /**
+     * 上传的图片过大
+     */
+    SIZE_ERROR(100203, "上传的图片过大"),
+    /**
      * 账号密码错误
      */
     PASSWORD_ERROR(100101, "账号或密码错误"),

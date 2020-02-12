@@ -31,13 +31,4 @@ public class ProfileParam implements Serializable {
      * 备注
      */
     private String note;
-
-    /**
-     * 用户状态 {@code Integer}
-     * <p>
-     * 0 - 禁止 <br />
-     * 1 - 启用
-     * </p>
-     */
-    private Integer status;
 }

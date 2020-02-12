@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @author Tiger
@@ -62,10 +63,11 @@ public class ProfileController {
     public ResponseResult<Void> update(@RequestBody ProfileParam profileParam) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         TbUser oldTbUser = tbUserService.get(authentication.getName());
-        if(oldTbUser ==null){
+        if (oldTbUser == null) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "异常操作");
         }
         BeanUtils.copyProperties(profileParam, oldTbUser);
+        oldTbUser.setUpdateTime(new Date());
         int result = tbUserService.update(oldTbUser);
 
         // 成功
