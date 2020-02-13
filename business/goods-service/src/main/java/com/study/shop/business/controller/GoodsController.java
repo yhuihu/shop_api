@@ -71,7 +71,7 @@ public class GoodsController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         myGoodsDTO.setUsername(username);
-        return new ResponseResult(ResponseResult.CodeStatus.OK, tbItemService.getMyGoods(myGoodsDTO));
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK, tbItemService.getMyGoods(myGoodsDTO));
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -89,7 +89,7 @@ public class GoodsController {
         List<String> imageList = Arrays.asList(myGoodsDetail.getImage().split(","));
         target.put("fileList", imageList);
         target.put("status", myGoodsDetail.getStatus());
-        return new ResponseResult(ResponseResult.CodeStatus.OK, target);
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK, target);
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -100,9 +100,9 @@ public class GoodsController {
         Long targetId = Long.valueOf(goodsId);
         int i = tbItemService.deleteGoods(username, targetId);
         if (i > 0) {
-            return new ResponseResult(ResponseResult.CodeStatus.OK);
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK);
         } else {
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL);
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL);
         }
     }
 
@@ -113,9 +113,9 @@ public class GoodsController {
         tbItem.setId(SnowIdUtils.uniqueLong());
         int i = tbItemService.addGoods(SecurityContextHolder.getContext().getAuthentication().getName(), tbItem, addGoods.getDesc());
         if (i > 0) {
-            return new ResponseResult(ResponseResult.CodeStatus.OK);
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK);
         } else {
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL);
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL);
         }
     }
 
@@ -127,10 +127,10 @@ public class GoodsController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         int i = tbItemService.updateMyGoods(username, tbItem);
-        if(i==0){
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL);
+        if (i == 0) {
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL);
         }
-        return new ResponseResult(ResponseResult.CodeStatus.OK);
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK);
     }
 
     @NotNull

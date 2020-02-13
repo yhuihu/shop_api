@@ -58,7 +58,6 @@
     </dependencies>
 
     <modules>
-        <module>upload-feign</module>
         <module>upload-service</module>
     </modules>
 </project>
