@@ -46,40 +46,41 @@ public interface TbItemService {
     /**
      * 用户获取自己发布的闲置物品
      * @param myGoodsDTO 实体
+     * @param userId 用户编号
      * @return PageInfo<GoodsVO> {@link GoodsVO}
      */
-    PageInfo<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO);
+    PageInfo<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO,Long userId);
 
     /**
      * 用户更新时加载数据
-     * @param username 用户名
+     * @param userId 用户编号
      * @param goodsId 商品编号
      * @return GoodDetailVO {@link GoodDetailVO}
      */
-    GoodDetailVO getMyGoodsDetail(String username,Long goodsId);
+    GoodDetailVO getMyGoodsDetail(Long userId,Long goodsId);
 
     /**
      * 用户发布闲置物品
-     * @param username 用户名
+     * @param userId 用户名
      * @param tbItem 实体
      * @param desc 商品描述
      * @return int 0,1
      */
-    int addGoods(String username, TbItem tbItem,String desc);
+    int addGoods(Long userId, TbItem tbItem,String desc);
 
     /**
      * 用户删除已发布的闲置物品
-     * @param username 用户名
+     * @param userId 用户编号
      * @param goodsId 商品编号
      * @return 0,1
      */
-    int deleteGoods(String username,Long goodsId);
+    int deleteGoods(Long userId,Long goodsId);
 
     /**
      * 用户更新自己的闲置物品信息
-     * @param username 用户名
+     * @param userId 用户编号
      * @param tbItem 实体
      * @return 0,1
      */
-    int updateMyGoods(String username,TbItem tbItem);
+    int updateMyGoods(Long userId,TbItem tbItem);
 }

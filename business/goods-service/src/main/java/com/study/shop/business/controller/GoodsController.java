@@ -5,7 +5,9 @@ import com.study.shop.business.BusinessException;
 import com.study.shop.business.ExceptionStatus;
 import com.study.shop.commons.dto.ResponseResult;
 import com.study.shop.provider.api.TbItemService;
+import com.study.shop.provider.api.TbUserService;
 import com.study.shop.provider.domain.TbItem;
+import com.study.shop.provider.domain.TbUser;
 import com.study.shop.provider.dto.AddGoods;
 import com.study.shop.provider.dto.GoodsSearchDTO;
 import com.study.shop.provider.dto.MyGoodsDTO;
@@ -46,6 +48,8 @@ import java.util.Map;
 public class GoodsController {
     @Reference(version = "1.0.0")
     private TbItemService tbItemService;
+    @Reference(version = "1.0.0")
+    private TbUserService tbUserService;
 
     @GetMapping("/recommend/{keyword}")
     public ResponseResult<List<String>> getRecommend(@PathVariable String keyword) {
@@ -70,8 +74,11 @@ public class GoodsController {
     public ResponseResult getMyGoods(MyGoodsDTO myGoodsDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        myGoodsDTO.setUsername(username);
-        return new ResponseResult<>(ResponseResult.CodeStatus.OK, tbItemService.getMyGoods(myGoodsDTO));
+        TbUser tbUser = tbUserService.get(username);
+        if (tbUser == null) {
+            throw new BusinessException(ExceptionStatus.ACCOUNT_NOT_EXIST);
+        }
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK, tbItemService.getMyGoods(myGoodsDTO, tbUser.getId()));
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -79,7 +86,11 @@ public class GoodsController {
     public ResponseResult getMyGoodsDetail(@PathVariable(name = "goodsId") String goodsId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        GoodDetailVO myGoodsDetail = tbItemService.getMyGoodsDetail(username, Long.valueOf(goodsId));
+        TbUser tbUser = tbUserService.get(username);
+        if (tbUser == null) {
+            throw new BusinessException(ExceptionStatus.ACCOUNT_NOT_EXIST);
+        }
+        GoodDetailVO myGoodsDetail = tbItemService.getMyGoodsDetail(tbUser.getId(), Long.valueOf(goodsId));
         Map<String, Object> target = new HashMap<>(7);
         target.put("title", myGoodsDetail.getTitle());
         target.put("sellPoint", myGoodsDetail.getSellPoint());
@@ -97,8 +108,12 @@ public class GoodsController {
     public ResponseResult deleteMyGoods(@RequestParam(name = "goodsId", required = true) String goodsId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
+        TbUser tbUser = tbUserService.get(username);
+        if (tbUser == null) {
+            throw new BusinessException(ExceptionStatus.ACCOUNT_NOT_EXIST);
+        }
         Long targetId = Long.valueOf(goodsId);
-        int i = tbItemService.deleteGoods(username, targetId);
+        int i = tbItemService.deleteGoods(tbUser.getId(), targetId);
         if (i > 0) {
             return new ResponseResult<>(ResponseResult.CodeStatus.OK);
         } else {
@@ -111,7 +126,12 @@ public class GoodsController {
     public ResponseResult addGoods(@Valid @RequestBody AddGoods addGoods) {
         TbItem tbItem = getTbItem(addGoods);
         tbItem.setId(SnowIdUtils.uniqueLong());
-        int i = tbItemService.addGoods(SecurityContextHolder.getContext().getAuthentication().getName(), tbItem, addGoods.getDesc());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        TbUser tbUser = tbUserService.get(username);
+        if (tbUser == null) {
+            throw new BusinessException(ExceptionStatus.ACCOUNT_NOT_EXIST);
+        }
+        int i = tbItemService.addGoods(tbUser.getId(), tbItem, addGoods.getDesc());
         if (i > 0) {
             return new ResponseResult<>(ResponseResult.CodeStatus.OK);
         } else {
@@ -126,7 +146,11 @@ public class GoodsController {
         tbItem.setId(Long.valueOf(uploadGoodsDTO.getGoodsId()));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        int i = tbItemService.updateMyGoods(username, tbItem);
+        TbUser tbUser = tbUserService.get(username);
+        if (tbUser == null) {
+            throw new BusinessException(ExceptionStatus.ACCOUNT_NOT_EXIST);
+        }
+        int i = tbItemService.updateMyGoods(tbUser.getId(), tbItem);
         if (i == 0) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL);
         }

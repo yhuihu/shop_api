@@ -4,17 +4,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.api.TbItemDescService;
 import com.study.shop.provider.api.TbItemService;
-import com.study.shop.provider.api.TbUserService;
 import com.study.shop.provider.domain.TbItem;
 import com.study.shop.provider.domain.TbItemDesc;
-import com.study.shop.provider.domain.TbUser;
 import com.study.shop.provider.dto.GoodsSearchDTO;
 import com.study.shop.provider.dto.MyGoodsDTO;
 import com.study.shop.provider.mapper.TbItemMapper;
 import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.provider.vo.GoodsVO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.BeanUtils;
 import tk.mybatis.mapper.entity.Example;
@@ -32,9 +29,6 @@ public class TbItemServiceImpl implements TbItemService {
 
     @Resource
     private TbItemMapper tbItemMapper;
-
-    @Reference(version = "1.0.0")
-    private TbUserService tbUserService;
 
     @Resource
     private TbItemDescService tbItemDescService;
@@ -68,9 +62,8 @@ public class TbItemServiceImpl implements TbItemService {
     }
 
     @Override
-    public PageInfo<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO) {
-        TbUser tbUser = tbUserService.get(myGoodsDTO.getUsername());
-        myGoodsDTO.setUserId(tbUser.getId());
+    public PageInfo<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO,Long userId) {
+        myGoodsDTO.setUserId(userId);
         if (myGoodsDTO.getPage() == null) {
             myGoodsDTO.setPage(1);
         }
@@ -83,10 +76,9 @@ public class TbItemServiceImpl implements TbItemService {
     }
 
     @Override
-    public GoodDetailVO getMyGoodsDetail(String username, Long goodsId) {
-        TbUser tbUser = tbUserService.get(username);
+    public GoodDetailVO getMyGoodsDetail(Long userId, Long goodsId) {
         GoodDetailVO goodDetail = tbItemMapper.getGoodDetail(goodsId);
-        if (!goodDetail.getUserId().equals(tbUser.getId())) {
+        if (!goodDetail.getUserId().equals(userId)) {
             return null;
         } else {
             return goodDetail;
@@ -94,9 +86,8 @@ public class TbItemServiceImpl implements TbItemService {
     }
 
     @Override
-    public int addGoods(String username, TbItem tbItem, String desc) {
-        TbUser tbUser = tbUserService.get(username);
-        tbItem.setUserId(tbUser.getId());
+    public int addGoods(Long userId, TbItem tbItem, String desc) {
+        tbItem.setUserId(userId);
         tbItem.setUpdated(new Date());
         tbItem.setCreated(new Date());
         try {
@@ -119,12 +110,11 @@ public class TbItemServiceImpl implements TbItemService {
     }
 
     @Override
-    public int deleteGoods(String username, Long goodsId) {
-        TbUser tbUser = tbUserService.get(username);
+    public int deleteGoods(Long userId, Long goodsId) {
         Example example = new Example(TbItem.class);
         example.createCriteria().andEqualTo("id", goodsId);
         TbItem tbItem = tbItemMapper.selectOneByExample(example);
-        if (!tbItem.getUserId().equals(tbUser.getId())) {
+        if (!tbItem.getUserId().equals(userId)) {
             return 0;
         } else {
             try {
@@ -137,22 +127,21 @@ public class TbItemServiceImpl implements TbItemService {
     }
 
     @Override
-    public int updateMyGoods(String username, TbItem tbItem) {
+    public int updateMyGoods(Long userId, TbItem tbItem) {
         Example example = new Example(TbItem.class);
         example.createCriteria().andEqualTo("id", tbItem.getId());
         TbItem tbItem1 = tbItemMapper.selectOneByExample(example);
-        TbUser tbUser = tbUserService.get(username);
-        if (!tbUser.getId().equals(tbItem1.getUserId())) {
+        if (!userId.equals(tbItem1.getUserId())) {
             return 0;
-        }else{
-            Date oldDate=tbItem1.getCreated();
-            BeanUtils.copyProperties(tbItem,tbItem1, "null");
-            try{
-                tbItem1.setUserId(tbUser.getId());
+        } else {
+            Date oldDate = tbItem1.getCreated();
+            BeanUtils.copyProperties(tbItem, tbItem1, "null");
+            try {
+                tbItem1.setUserId(userId);
                 tbItem1.setCreated(oldDate);
                 tbItem1.setUpdated(new Date());
                 return tbItemMapper.updateByPrimaryKey(tbItem1);
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error(e.getMessage());
                 return 0;
             }

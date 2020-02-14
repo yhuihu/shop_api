@@ -29,6 +29,11 @@ public enum ExceptionStatus {
     ACCOUNT_LOCK(100102, "账号被锁定"),
 
     /**
+     * 账号不存在
+     */
+    ACCOUNT_NOT_EXIST(100103, "账户不存在"),
+
+    /**
      * 数据库操作异常
      */
     DATABASE_ERROR(600101, "数据库操作异常"),
