@@ -40,6 +40,14 @@ public class TbItemServiceImpl implements TbItemService {
 
     @Override
     public PageInfo<GoodsVO> searchItem(GoodsSearchDTO goodsSearchDTO) {
+        String s1 = "str";
+        String s2 = "ing";
+        String s3 = "str" + "ing";  //常量池中的对象
+        String s4 = s1 + s2;  //在堆上创建新的对象
+        String s5 = "string";  //常量池中的对象
+        System.out.println(s3 == s4);  //false
+        System.out.println(s3 == s5);  //true
+        System.out.println(s4 == s5);  //false
         if (goodsSearchDTO.getPage() == null) {
             goodsSearchDTO.setPage(1);
         }
@@ -62,7 +70,7 @@ public class TbItemServiceImpl implements TbItemService {
     }
 
     @Override
-    public PageInfo<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO,Long userId) {
+    public PageInfo<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO, Long userId) {
         myGoodsDTO.setUserId(userId);
         if (myGoodsDTO.getPage() == null) {
             myGoodsDTO.setPage(1);

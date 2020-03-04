@@ -39,7 +39,8 @@ spring:
           filters:
             - StripPrefix=1
         - id: CLOUD-UPLOAD
-          uri: lb://cloud-upload
+#          uri: lb://cloud-upload
+          uri: lb://oauth2
           predicates:
             - Path=/api/upload/**
           filters:
