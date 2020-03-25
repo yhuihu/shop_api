@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 
 /**
  * 资源服务器
+ *
  * @author Tiger
  * @date 2019-09-16
  * @see com.study.shop.business.configure
@@ -34,6 +35,9 @@ public class ProfileResourceServerConfiguration extends ResourceServerConfigurer
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/email/**").permitAll()
+                .antMatchers("/profile/register").permitAll()
+                .antMatchers("/chat").permitAll()
                 .antMatchers("/**").hasAuthority("USER");
     }
 

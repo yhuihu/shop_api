@@ -15,7 +15,7 @@ public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = -7077321098372740610L;
 
-    private Long id;
+    private String id;
     private String username;
 
     /**
@@ -34,6 +34,11 @@ public class UserInfo implements Serializable {
     private String nickName;
 
     /**
+     * 余额
+     */
+    private Double money;
+
+    /**
      * 备注信息
      */
     private String note;
@@ -47,5 +52,7 @@ public class UserInfo implements Serializable {
      * 帐号启用状态：0->禁用；1->启用
      */
     private Integer status;
+
+    private String address;
 
 }

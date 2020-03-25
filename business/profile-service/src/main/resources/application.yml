@@ -4,10 +4,10 @@ base:
       hostname: localhost
       port: 9001
     nacos:
-      hostname: my.service.com
+      hostname: 192.168.200.128
       port: 8848
     sentile:
-      hostname: my.service.com
+      hostname: 192.168.200.128
       port: 8080
 
 spring:

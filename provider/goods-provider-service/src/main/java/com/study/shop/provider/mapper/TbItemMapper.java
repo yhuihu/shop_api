@@ -40,6 +40,7 @@ public interface TbItemMapper extends Mapper<TbItem> {
 
     /**
      * 获取详情数据集
+     *
      * @param productIds id数据集
      * @return List<GoodsVO>
      */
@@ -47,8 +48,16 @@ public interface TbItemMapper extends Mapper<TbItem> {
 
     /**
      * 用户查找自己发布的闲置物品
+     *
      * @param myGoodsDTO 实体
      * @return List<GoodsVO> {@link GoodsVO}
      */
     List<GoodsVO> getMyGoods(MyGoodsDTO myGoodsDTO);
+
+    /**
+     * 获取商品详情
+     * @param goodsId
+     * @return
+     */
+    GoodDetailVO getLogGoodDetail(Long goodsId);
 }

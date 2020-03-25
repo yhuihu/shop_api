@@ -45,6 +45,12 @@ public class TbUser implements Serializable {
     private String nickName;
 
     /**
+     * 余额
+     */
+    @Column(name = "money", insertable = false)
+    private Double money;
+
+    /**
      * 备注信息
      */
     @Column(name = "note")

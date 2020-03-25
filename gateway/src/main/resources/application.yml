@@ -1,7 +1,7 @@
 base:
   config:
     nacos:
-      hostname: my.service.com
+      hostname: 192.168.200.128
       port: 8848
 spring:
   application:
@@ -21,6 +21,7 @@ spring:
       # 配置路由规则
       routes:
         # 采用自定义路由 ID（有固定用法，不同的 id 有不同的功能，详见：https://cloud.spring.io/spring-cloud-gateway/2.0.x/single/spring-cloud-gateway.html#gateway-route-filters）
+        #        登录服务
         - id: BUSINESS-OAUTH2
           # 采用 LoadBalanceClient 方式请求，以 lb:// 开头，后面的是注册在 Nacos 上的服务名
           uri: lb://oauth2
@@ -29,44 +30,91 @@ spring:
             # 路径匹配，以 api 开头，直接配置是不生效的，看 filters 配置
             - Path=/api/user/**
           filters:
-            # 前缀过滤，默认配置下，我们的请求路径是 http://my.service.com:8888/business-oauth2/** 这时会路由到指定的服务
-            # 此处配置去掉 1 个路径前缀，再配置上面的 Path=/api/**，就能按照 http://my.service.com:8888/api/** 的方式访问了
+            # 前缀过滤，默认配置下，我们的请求路径是 http://192.168.200.128:8888/business-oauth2/** 这时会路由到指定的服务
+            # 此处配置去掉 1 个路径前缀，再配置上面的 Path=/api/**，就能按照 http://192.168.200.128:8888/api/** 的方式访问了
             - StripPrefix=1
+
+        #         用户信息服务
         - id: BUSINESS-PROFILE
           uri: lb://profile
           predicates:
             - Path=/api/profile/**
           filters:
             - StripPrefix=1
+#                注册，找回密码时获取验证码
+        - id: BUSINESS-EMAIL
+          uri: lb://profile
+          predicates:
+            - Path=/api/email/**
+          filters:
+            - StripPrefix=1
+        #        图片上传token获取
         - id: CLOUD-UPLOAD
-#          uri: lb://cloud-upload
+          #          uri: lb://cloud-upload
           uri: lb://oauth2
           predicates:
             - Path=/api/upload/**
           filters:
             - StripPrefix=1
+        #        商品分类
         - id: BUSSINESS-CLASSIFICATION
-          uri: lb://classification
+          uri: lb://goods
           predicates:
             - Path=/api/classification/**
           filters:
             - StripPrefix=1
+        #        商品
         - id: BUSSINESS-GOODS
           uri: lb://goods
           predicates:
             - Path=/api/goods/**
           filters:
             - StripPrefix=1
+        #        订单
+        - id: BUSSINESS-ORDER
+          uri: lb://goods
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - StripPrefix=1
+        #        购物车
         - id: BUSSINESS-CART
           uri: lb://goods
           predicates:
             - Path=/api/cart/**
           filters:
             - StripPrefix=1
+        #        地址
         - id: BUSSINESS-ADDRESS
           uri: lb://profile
           predicates:
             - Path=/api/address/**
+          filters:
+            - StripPrefix=1
+        #        商品评论
+        - id: BUSSINESS-COMMENT
+          uri: lb://goods
+          predicates:
+            - Path=/api/comment/**
+          filters:
+            - StripPrefix=1
+        #        商品评论
+        - id: BUSSINESS-FOLLOW
+          uri: lb://profile
+          predicates:
+            - Path=/api/follow/**
+          filters:
+            - StripPrefix=1
+        - id: BUSSINESS-FOLLOW
+          uri: lb://profile
+          predicates:
+            - Path=/api/communication/**
+          filters:
+            - StripPrefix=1
+        - id: BUSINESS-WEBSOCKET
+          uri: lb://profile
+          predicates:
+            - Path=/api/chat/**
           filters:
             - StripPrefix=1
 server:

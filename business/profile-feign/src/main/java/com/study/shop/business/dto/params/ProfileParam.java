@@ -31,4 +31,8 @@ public class ProfileParam implements Serializable {
      * 备注
      */
     private String note;
+    /**
+     * 地址
+     */
+    private String address;
 }

@@ -76,7 +76,6 @@
         <module>oauth2-service</module>
         <module>profile-feign</module>
         <module>profile-service</module>
-        <module>classification-service</module>
         <module>goods-service</module>
     </modules>
 </project>

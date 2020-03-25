@@ -2,8 +2,8 @@
 #  cloud:
 #    nacos:
 #      config:
-#        server-addr: my.service.com:8848
-#        file-extension: yaml
+#        server-addr: 192.168.200.128:8848
+#        file-extension: yml
 #  application:
 #    name: gateway-config
 #  main:

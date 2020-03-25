@@ -39,12 +39,12 @@ public class RedisConfig {
     public LettuceConnectionFactory lettuceConnectionFactory(GenericObjectPoolConfig genericObjectPoolConfig) {
         RedisClusterConfiguration redisConfiguration = new RedisClusterConfiguration();
         List<RedisNode> nodeList = new ArrayList<>();
-        nodeList.add(new RedisNode("my.service.com", 7001));
-        nodeList.add(new RedisNode("my.service.com", 7002));
-        nodeList.add(new RedisNode("my.service.com", 7003));
-        nodeList.add(new RedisNode("my.service.com", 7004));
-        nodeList.add(new RedisNode("my.service.com", 7005));
-        nodeList.add(new RedisNode("my.service.com", 7006));
+        nodeList.add(new RedisNode("192.168.200.128", 7001));
+        nodeList.add(new RedisNode("192.168.200.128", 7002));
+        nodeList.add(new RedisNode("192.168.200.128", 7003));
+        nodeList.add(new RedisNode("192.168.200.128", 7004));
+        nodeList.add(new RedisNode("192.168.200.128", 7005));
+        nodeList.add(new RedisNode("192.168.200.128", 7006));
         redisConfiguration.setClusterNodes(nodeList);
         redisConfiguration.setPassword("yang123(*&");
         LettuceClientConfiguration clientConfig = LettucePoolingClientConfiguration.builder()
@@ -67,22 +67,4 @@ public class RedisConfig {
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
-
-//    @Bean
-//    public JedisCluster jedisCluster(){
-//        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-//        jedisPoolConfig.setMaxIdle(32);
-//        jedisPoolConfig.setMaxWaitMillis(8000);
-//        jedisPoolConfig.setMaxTotal(32);
-//        jedisPoolConfig.setMinIdle(0);
-//        jedisPoolConfig.setTestOnBorrow(true);
-//        Set<HostAndPort> nodeList = new LinkedHashSet<HostAndPort>();
-//        nodeList.add(new HostAndPort("my.service.com",7001));
-//        nodeList.add(new HostAndPort("my.service.com",7002));
-//        nodeList.add(new HostAndPort("my.service.com",7003));
-//        nodeList.add(new HostAndPort("my.service.com",7004));
-//        nodeList.add(new HostAndPort("my.service.com",7005));
-//        nodeList.add(new HostAndPort("my.service.com",7006));
-//        return new JedisCluster(nodeList, 5000, 5000, 5,"yang123(*&", jedisPoolConfig);
-//    }
 }

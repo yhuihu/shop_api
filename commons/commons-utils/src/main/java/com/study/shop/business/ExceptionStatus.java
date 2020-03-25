@@ -49,6 +49,12 @@ public enum ExceptionStatus {
     REDIS_ERROR(700101, "服务器操作异常"),
 
     /**
+     * 获取锁超时
+     */
+    ORDER_ERROR(700102, "当前用户人数过多，请稍后重试"),
+
+
+    /**
      * 未知错误
      */
     UNKNOWN(-1, "未知错误"),

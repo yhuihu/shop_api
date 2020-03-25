@@ -12,4 +12,7 @@ import lombok.Data;
 public class GoodDetailVO extends TbItem {
     private static final long serialVersionUID = 1774495741412050105L;
     private String itemDesc;
+    private String icon;
+    private String address;
+    private String nickName;
 }

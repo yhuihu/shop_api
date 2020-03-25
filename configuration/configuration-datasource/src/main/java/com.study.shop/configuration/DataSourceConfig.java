@@ -16,7 +16,7 @@ public class DataSourceConfig {
     @Bean
     public DataSource dataSource() {
         HikariDataSource dataSource = new HikariDataSource();
-        String url = "jdbc:mysql://my.service.com:3306/secondMall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8";
+        String url = "jdbc:mysql://192.168.200.128:3306/secondMall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8";
         String username = "root";
         String password = "123456";
         dataSource.setJdbcUrl(url);

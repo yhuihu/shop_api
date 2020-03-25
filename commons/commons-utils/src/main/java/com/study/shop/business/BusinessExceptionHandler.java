@@ -38,5 +38,4 @@ public class BusinessExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.OK);
     }
 
-
 }

@@ -16,6 +16,7 @@
     <result column="role" jdbcType="VARCHAR" property="role" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated generated on Tue Nov 19 09:29:45 GMT+08:00 2019.-->

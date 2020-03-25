@@ -8,6 +8,7 @@ import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.provider.vo.GoodsVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author admin
@@ -30,7 +31,7 @@ public interface TbItemService {
     PageInfo<GoodsVO> searchItem(GoodsSearchDTO goodsSearchDTO);
 
     /**
-     * 功能描述: <br>
+     * 功能描述: 获取商品详情<br>
      * @param goodId  Long
      * @return GoodDetailVO {@link GoodDetailVO}
      */
@@ -43,6 +44,12 @@ public interface TbItemService {
      */
     List<GoodsVO> getCartDetail(List<Long> productIdList);
 
+    /**
+     * 获取日志商品详情
+     * @param goodsIds id集合
+     * @return GoodDetailVO
+     */
+    List<GoodDetailVO> getLogsGoodsDetail(List<Long> goodsIds);
     /**
      * 用户获取自己发布的闲置物品
      * @param myGoodsDTO 实体
@@ -83,4 +90,19 @@ public interface TbItemService {
      * @return 0,1
      */
     int updateMyGoods(Long userId,TbItem tbItem);
+
+    /**
+     * 更改商品状态
+     * @param goodsId 商品编号
+     * @param status 状态
+     * @return 0,1
+     */
+    int changeGoodsStatus(List<Long> goodsId,Integer status);
+
+    /**
+     * 获取用户商品数量与售出数量
+     * @param userId userId
+     * @return Map集合
+     */
+    Map<String,Object> getOtherGoodsNumberAndSellCount(Long userId);
 }

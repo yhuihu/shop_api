@@ -28,10 +28,6 @@
         </dependency>
         <dependency>
             <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-spring-boot-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
             <exclusions>
                 <exclusion>
@@ -117,9 +113,9 @@
     <modules>
         <module>user-provider-api</module>
         <module>user-provider-service</module>
-        <module>classification-provider-api</module>
-        <module>classification-provider-service</module>
-        <module>goods-provider-service</module>
         <module>goods-provider-api</module>
+        <module>goods-provider-service</module>
+        <module>order-provider-api</module>
+        <module>order-provider-service</module>
     </modules>
 </project>

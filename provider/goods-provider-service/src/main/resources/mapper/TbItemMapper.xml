@@ -48,6 +48,7 @@
         <result column="updated" jdbcType="TIMESTAMP" property="updated"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="item_desc" jdbcType="BIGINT" property="itemDesc"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
@@ -96,8 +97,11 @@
     <select id="getGoodDetail" resultType="com.study.shop.provider.vo.GoodDetailVO" resultMap="GoodDetail">
         SELECT
         ti.id, ti.title, ti.sell_point, ti.price, ti.image, ti.classification_id, ti.status, ti.created, ti.updated,
-        ti.user_id,td.item_desc
-        from `tb_item` as ti left join tb_item_desc td on ti.id=td.item_id where ti.id = #{goodId}
+        ti.user_id,td.item_desc,tu.nick_name,tu.icon,tu.address
+        from `tb_item` as ti
+        LEFT JOIN tb_item_desc td on ti.id=td.item_id
+        LEFT JOIN tb_user tu on tu.id=ti.user_id
+        where ti.id = #{goodId} and ti.status = 1
     </select>
     <select id="getCartDetail" resultMap="GoodsList">
         SELECT * from `tb_item` where id in
@@ -109,5 +113,13 @@
             parameterType="com.study.shop.provider.dto.MyGoodsDTO" resultMap="GoodsList">
         SELECT * from `tb_item` where user_id = #{userId}
     </select>
-
+    <select id="getLogGoodDetail" resultType="com.study.shop.provider.vo.GoodDetailVO" resultMap="GoodDetail">
+        SELECT
+        ti.id, ti.title, ti.sell_point, ti.price, ti.image, ti.classification_id, ti.status, ti.created, ti.updated,
+        ti.user_id,td.item_desc,tu.nick_name,tu.icon,tu.address
+        from `tb_item` as ti
+        LEFT JOIN tb_item_desc td on ti.id=td.item_id
+        LEFT JOIN tb_user tu on tu.id=ti.user_id
+        where ti.id = #{goodId}
+    </select>
 </mapper>

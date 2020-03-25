@@ -17,8 +17,11 @@ import org.springframework.beans.BeanUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author admin
@@ -40,14 +43,6 @@ public class TbItemServiceImpl implements TbItemService {
 
     @Override
     public PageInfo<GoodsVO> searchItem(GoodsSearchDTO goodsSearchDTO) {
-        String s1 = "str";
-        String s2 = "ing";
-        String s3 = "str" + "ing";  //常量池中的对象
-        String s4 = s1 + s2;  //在堆上创建新的对象
-        String s5 = "string";  //常量池中的对象
-        System.out.println(s3 == s4);  //false
-        System.out.println(s3 == s5);  //true
-        System.out.println(s4 == s5);  //false
         if (goodsSearchDTO.getPage() == null) {
             goodsSearchDTO.setPage(1);
         }
@@ -67,6 +62,15 @@ public class TbItemServiceImpl implements TbItemService {
     @Override
     public List<GoodsVO> getCartDetail(List<Long> productIdList) {
         return tbItemMapper.getCartDetail(productIdList);
+    }
+
+    @Override
+    public List<GoodDetailVO> getLogsGoodsDetail(List<Long> goodsIds) {
+        List<GoodDetailVO> goodDetailVOS = new ArrayList<>();
+        goodsIds.forEach(item -> {
+            goodDetailVOS.add(tbItemMapper.getLogGoodDetail(item));
+        });
+        return goodDetailVOS;
     }
 
     @Override
@@ -126,7 +130,8 @@ public class TbItemServiceImpl implements TbItemService {
             return 0;
         } else {
             try {
-                return tbItemMapper.delete(tbItem);
+                tbItem.setStatus(4);
+                return tbItemMapper.updateByPrimaryKey(tbItem);
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return 0;
@@ -154,5 +159,43 @@ public class TbItemServiceImpl implements TbItemService {
                 return 0;
             }
         }
+    }
+
+    @Override
+    public int changeGoodsStatus(List<Long> goodsId, Integer status) {
+        try {
+            for (Long aLong : goodsId) {
+                TbItem tbItem = tbItemMapper.selectByPrimaryKey(aLong);
+                tbItem.setStatus(status);
+                int i = tbItemMapper.updateByPrimaryKey(tbItem);
+                if (i == 0) {
+                    return 0;
+                }
+            }
+            return 1;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return 0;
+        }
+    }
+
+    @Override
+    public Map<String, Object> getOtherGoodsNumberAndSellCount(Long userId) {
+        Example example = new Example(TbItem.class);
+        example.createCriteria().andEqualTo("userId", userId).andNotEqualTo("status", 4).
+                andNotEqualTo("status", 3).andNotEqualTo("status", 0);
+        List<TbItem> list = tbItemMapper.selectByExample(example);
+        int goodsCount = list.size();
+        int sellCount = 0;
+        for (TbItem tbItem : list) {
+            if (tbItem.getStatus() == 2 || tbItem.getStatus() == 3) {
+                sellCount++;
+            }
+        }
+        Map<String, Object> map = new HashMap<>(3, 1);
+        map.put("goodsList", list);
+        map.put("goodsCount", goodsCount);
+        map.put("sellCount", sellCount);
+        return map;
     }
 }

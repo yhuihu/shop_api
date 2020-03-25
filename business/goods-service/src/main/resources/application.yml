@@ -4,10 +4,10 @@ base:
       hostname: localhost
       port: 9001
     nacos:
-      hostname: my.service.com
+      hostname: 192.168.200.128
       port: 8848
     sentile:
-      hostname: my.service.com
+      hostname: 192.168.200.128
       port: 8080
 spring:
   application:
@@ -25,6 +25,31 @@ spring:
     sentinel:
       transport:
         dashboard: ${base.config.sentile.hostname}:${base.config.sentile.port}
+    stream:
+      bindings:
+        shop:
+          content-type: text/plain
+          destination: shopTopic
+        order:
+          consumer:
+            concurrency: 20
+          content-type: application/json
+          destination: shopTopic
+          group: shop-group
+      rocketmq:
+        binder:
+          name-server: 192.168.200.128:9876
+        #自定义的名称 对应spring.cloud.stream.bindings.output1
+        bindings:
+          shop:
+            producer:
+              group: shop-group
+              transactional: true
+          order:
+            consumer:
+              broadcasting: false
+              #              sql: 'index >= 600'
+              tags: create_order || check_order
 security:
   oauth2:
     client:

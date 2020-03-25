@@ -33,5 +33,10 @@
             <artifactId>commons-dto</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <!--发送邮箱验证码用-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
     </dependencies>
 </project>

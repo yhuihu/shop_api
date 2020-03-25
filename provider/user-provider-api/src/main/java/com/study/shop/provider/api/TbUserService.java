@@ -10,7 +10,7 @@ public interface TbUserService {
      * 新增用户
      *
      * @param tuser {@link TbUser}
-     * @return {@code int} 大于 0 则表示添加成功
+     * @return {@code int} 大于 0 则表示添加成功  -1手机号已存在
      */
     int insert(TbUser tuser);
 
@@ -35,7 +35,7 @@ public interface TbUserService {
      * @param id 用户id
      * @return {@link TbUser}
      **/
-    TbUser getById(int id);
+    TbUser getById(Long id);
 
     /**
      * 更新用户
@@ -65,4 +65,20 @@ public interface TbUserService {
      * @return {@code int} 大于 0 则表示更新成功
      */
     int modifyIcon(String username, String path);
+
+    /**
+     * 根据邮箱查找用户
+     * @param email e
+     * @return 0-不存在,1-存在
+     */
+    int getByMail(String email);
+
+    /**
+     * 找回密码
+     * @param email 邮箱
+     * @param password 密码
+     * @return 0，失败  1，成功
+     */
+    int findUser(String email,String password);
+
 }

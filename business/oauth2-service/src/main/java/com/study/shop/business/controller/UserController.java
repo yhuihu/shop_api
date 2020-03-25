@@ -129,6 +129,7 @@ public class UserController {
 
         // 封装并返回结果
         LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setId(String.valueOf(tbUser.getId()));
         loginInfo.setName(tbUser.getUsername());
         loginInfo.setAvatar(tbUser.getIcon());
         loginInfo.setNickName(tbUser.getNickName());

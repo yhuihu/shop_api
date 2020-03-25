@@ -5,18 +5,21 @@ import com.study.shop.provider.api.TbUserService;
 import com.study.shop.provider.domain.TbUser;
 import com.study.shop.provider.mapper.TbUserMapper;
 import com.study.shop.provider.service.fallback.TbUserServiceFallback;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 
 /**
  * @author Admin
  */
-@Service(version = "1.0.0")
+@Slf4j
+@Service(version = "1.0.0", parameters = {"insert.retries", "0", "insert.timeout", "60000"})
 public class TbUserServiceImpl implements TbUserService {
 
     @Resource
@@ -27,6 +30,12 @@ public class TbUserServiceImpl implements TbUserService {
 
     @Override
     public int insert(TbUser tuser) {
+        Example example = new Example(TbUser.class);
+        example.createCriteria().andEqualTo("phone", tuser.getPhone());
+        TbUser tbUser = tbUserMapper.selectOneByExample(example);
+        if (tbUser != null) {
+            return -1;
+        }
         // 初始化用户对象
         initUmsAdmin(tuser);
         return tbUserMapper.insert(tuser);
@@ -58,7 +67,7 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
-    public TbUser getById(int id) {
+    public TbUser getById(Long id) {
         Example example = new Example(TbUser.class);
         example.createCriteria().andEqualTo("id", id);
         return tbUserMapper.selectOneByExample(example);
@@ -84,6 +93,32 @@ public class TbUserServiceImpl implements TbUserService {
         return tbUserMapper.updateByPrimaryKey(tuser);
     }
 
+    @Override
+    public int getByMail(String email) {
+        Example example = new Example(TbUser.class);
+        example.createCriteria().andEqualTo("email", email);
+        List<TbUser> tbUsers = tbUserMapper.selectByExample(example);
+        if (tbUsers.size() > 0) {
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public int findUser(String email, String password) {
+        Example example = new Example(TbUser.class);
+        example.createCriteria().andEqualTo("email", email);
+        TbUser tbUser = tbUserMapper.selectOneByExample(example);
+        tbUser.setPassword(passwordEncoder.encode(password));
+        try{
+            tbUserMapper.updateByPrimaryKeySelective(tbUser);
+            return 1;
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return 0;
+        }
+    }
+
     /**
      * 初始化用户对象
      *
@@ -97,6 +132,8 @@ public class TbUserServiceImpl implements TbUserService {
         if (tuser.getStatus() == null) {
             tuser.setStatus(1);
         }
+        tuser.setIcon("http://yhhu.xyz/ft1Uo1DThKrCsVGosrEVxuGK");
+        tuser.setRole("USER");
         // 密码加密
         tuser.setPassword(passwordEncoder.encode(tuser.getPassword()));
     }
