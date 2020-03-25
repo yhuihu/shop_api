@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.shop.provider.mapper.TbFollowMapper">
+    <resultMap id="BaseResultMap" type="com.study.shop.provider.domain.TbFollow">
+        <!--@mbg.generated generated on Sun Mar 22 14:10:20 GMT+08:00 2020.-->
+        <!--@Table tb_follow-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="target_id" jdbcType="BIGINT" property="targetId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Sun Mar 22 14:10:20 GMT+08:00 2020.-->
+        id, user_id, target_id, create_time
+    </sql>
+    <resultMap id="myFollowUser" type="com.study.shop.provider.dto.FollowUserDTO">
+        <!--@mbg.generated generated on Sun Mar 22 14:10:20 GMT+08:00 2020.-->
+        <!--@Table tb_follow-->
+        <result column="target_id" property="userId"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select resultMap="myFollowUser" id="getMyFollow" resultType="com.study.shop.provider.dto.FollowUserDTO">
+        select tf.target_id,tf.create_time,tu.icon,tu.nick_name
+        from tb_follow as tf
+        left join tb_user as tu on tu.id=tf.target_id
+        where tf.user_id=#{userId}
+    </select>
+</mapper>

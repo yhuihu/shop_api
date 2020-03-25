@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.shop.provider.mapper.TbCommunicationMapper">
+  <resultMap id="BaseResultMap" type="com.study.shop.provider.domain.TbCommunication">
+    <!--@mbg.generated generated on Mon Mar 23 21:31:22 GMT+08:00 2020.-->
+    <!--@Table tb_communication-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="content_type" jdbcType="INTEGER" property="contentType" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="from_id" jdbcType="BIGINT" property="fromId" />
+    <result column="to_id" jdbcType="BIGINT" property="toId" />
+    <result column="is_read" jdbcType="INTEGER" property="isRead" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Mon Mar 23 21:31:22 GMT+08:00 2020.-->
+    id, content_type, content, from_id, to_id, is_read, create_time
+  </sql>
+    <select id="getMyMessage" resultType="com.study.shop.provider.vo.MessageVO">
+        select tc.content as content,tc.content_type as contentType,tc.from_id as fromId,
+        tc.create_time as createTime,tc.to_id as toId,tc.is_read as isRead,
+        tu_from.nick_name as fromNickName,tu_from.icon as fromIcon,
+        tu_to.nick_name as toNickName,tu_to.icon as toIcon
+        from tb_communication as tc
+        left join tb_user as tu_from on tu_from.id=tc.from_id
+        left join tb_user as tu_to on tu_to.id=tc.to_id
+        where tc.to_id=#{userId} or tc.from_id=#{userId}
+        order by tc.create_time desc
+    </select>
+</mapper>

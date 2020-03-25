@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.shop.provider.mapper.TbCommentMapper">
+    <resultMap id="BaseResultMap" type="com.study.shop.provider.domain.TbComment">
+        <!--@mbg.generated generated on Wed Mar 18 16:38:59 GMT+08:00 2020.-->
+        <!--@Table tb_comment-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="goods_id" jdbcType="BIGINT" property="goodsId"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="reply_id" jdbcType="BIGINT" property="replyId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Wed Mar 18 16:38:59 GMT+08:00 2020.-->
+        id, goods_id, content, user_id, reply_id, create_time
+    </sql>
+    <resultMap id="allComment" type="com.study.shop.provider.vo.CommentVO">
+        <result property="id" column="id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="content" column="content"/>
+        <result property="userId" column="user_id"/>
+        <result property="replyId" column="reply_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="nickName" column="nick_name"/>
+        <collection property="children" javaType="ArrayList"
+                    ofType="com.study.shop.provider.domain.TbComment"
+                    select="getCommentByParent"
+                    column="id"/>
+    </resultMap>
+    <resultMap id="childrenComment" type="com.study.shop.provider.vo.CommentVO">
+        <result property="id" column="id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="content" column="content"/>
+        <result property="userId" column="user_id"/>
+        <result property="replyId" column="reply_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="nickName" column="nick_name"/>
+    </resultMap>
+    <select id="getAllComment" resultMap="allComment"
+            resultType="com.study.shop.provider.vo.CommentVO">
+        select
+        tc.id,tc.goods_id,tc.content,tc.user_id,tc.reply_id,tc.create_time,
+        tu.nick_name,tu.icon
+        from tb_comment tc left join tb_user tu on tc.user_id=tu.id where goods_id = #{id} and reply_id= 0 order by tc.create_time desc
+    </select>
+
+    <select id="getCommentByParent" resultMap="childrenComment"
+            resultType="com.study.shop.provider.vo.CommentVO">
+        select
+        tc.id,tc.goods_id,tc.content,tc.user_id,tc.reply_id,tc.create_time,
+        tu.nick_name,tu.icon
+        from tb_comment tc left join tb_user tu on tc.user_id=tu.id where reply_id = #{id} order by tc.create_time asc
+    </select>
+</mapper>
