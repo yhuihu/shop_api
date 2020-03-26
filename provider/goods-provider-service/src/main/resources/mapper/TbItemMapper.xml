@@ -67,7 +67,7 @@
         ti.user_id,tu.nick_name,tu.address,tu.icon
         from `tb_item` as ti left join tb_user tu
         on ti.user_id = tu.id
-        where 1=1
+        where ti.status = 1
         <if test="priceGt != null">
             and ti.price &gt;= #{priceGt}
         </if>

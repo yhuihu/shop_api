@@ -44,7 +44,7 @@ public class TbCartServiceImpl implements TbCartService {
                     return 0;
                 }
                 GoodDetailVO goodDetail = tbItemService.getGoodDetail(Long.valueOf(cartData.getProductId()));
-                if (goodDetail.getStatus() == 0) {
+                if (goodDetail.getStatus() == 1) {
                     cartData.setChecked("1");
                     hashOperations.put(key, cartData.getProductId(), cartData);
                     return 1;
@@ -73,7 +73,7 @@ public class TbCartServiceImpl implements TbCartService {
             Iterator<GoodsVO> iterator = cartDetail.iterator();
             while (iterator.hasNext()) {
                 GoodsVO goodsVO = iterator.next();
-                if (goodsVO.getStatus() != 0) {
+                if (goodsVO.getStatus() != 1) {
                     iterator.remove();
                     redisTemplate.opsForHash().delete(key, goodsVO.getId());
                 }

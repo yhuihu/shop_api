@@ -146,6 +146,8 @@ public class TbItemServiceImpl implements TbItemService {
         TbItem tbItem1 = tbItemMapper.selectOneByExample(example);
         if (!userId.equals(tbItem1.getUserId())) {
             return 0;
+        } else if (2 == tbItem1.getStatus()) {
+            return 0;
         } else {
             Date oldDate = tbItem1.getCreated();
             BeanUtils.copyProperties(tbItem, tbItem1, "null");

@@ -1,5 +1,7 @@
 package com.study.shop.provider.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.api.TbOrderService;
 import com.study.shop.provider.domain.TbOrder;
 import com.study.shop.provider.mapper.TbOrderMapper;
@@ -11,6 +13,8 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author admin
@@ -33,14 +37,17 @@ public class TbOrderServiceImpl implements TbOrderService {
     }
 
     @Override
-    public int checkOrder(Long userId, Long groupId) {
+    public int checkOrder(Long userId, Long groupId, List<CheckOrderVO> checkOrderVOS) {
         try {
             Example example = new Example(TbOrder.class);
             example.createCriteria().andEqualTo("groupId", groupId).andEqualTo("userId", userId);
             example.setForUpdate(true);
             List<TbOrder> tbOrders = tbOrderMapper.selectByExample(example);
+            Map<String, CheckOrderVO> map = checkOrderVOS.stream().collect(Collectors.toMap(CheckOrderVO::getGoodsId, checkOrderVO -> checkOrderVO));
             tbOrders.forEach(item -> {
                 item.setStatus(2);
+                item.setPaymentTime(new Date());
+                item.setPayment(map.get(String.valueOf(item.getGoodsId())).getPrice().doubleValue());
                 tbOrderMapper.updateByPrimaryKeySelective(item);
             });
             return 1;
@@ -58,7 +65,7 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Override
     public List<TbOrder> getByGroup(Long groupId) {
         Example example = new Example(TbOrder.class);
-        example.createCriteria().andEqualTo("groupId", groupId);
+        example.createCriteria().andEqualTo("groupId", groupId).andEqualTo("status", 0);
         return tbOrderMapper.selectByExample(example);
     }
 
@@ -78,11 +85,19 @@ public class TbOrderServiceImpl implements TbOrderService {
 
     @Override
     public int changeOrderStatus(Long groupId, Integer status) {
-        TbOrder tbOrder=new TbOrder();
+        TbOrder tbOrder = new TbOrder();
         tbOrder.setStatus(status);
-        Example example=new Example(TbOrder.class);
-        example.createCriteria().andEqualTo("groupId",groupId);
-        tbOrderMapper.updateByExampleSelective(tbOrder,example);
+        Example example = new Example(TbOrder.class);
+        example.createCriteria().andEqualTo("groupId", groupId);
+        tbOrderMapper.updateByExampleSelective(tbOrder, example);
         return 0;
+    }
+
+    @Override
+    public PageInfo<TbOrder> getMyOrder(Long userId, Integer page, Integer size) {
+        Example example = new Example(TbOrder.class);
+        example.createCriteria().andEqualTo("userId", userId);
+        PageHelper.startPage(page, size);
+        return new PageInfo<>(tbOrderMapper.selectByExample(example));
     }
 }

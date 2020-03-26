@@ -1,5 +1,6 @@
 package com.study.shop.business.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.study.shop.business.BusinessException;
 import com.study.shop.business.ExceptionStatus;
 import com.study.shop.business.mq.MqUtils;
@@ -13,6 +14,7 @@ import com.study.shop.provider.api.TbOrderService;
 import com.study.shop.provider.api.TbUserService;
 import com.study.shop.provider.domain.TbOrder;
 import com.study.shop.provider.domain.TbUser;
+import com.study.shop.provider.vo.CheckOrderVO;
 import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.utils.SnowIdUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -159,29 +162,45 @@ public class OrderController {
         }
     }
 
+    /**
+     * 根据group获取商品
+     *
+     * @param groupId groupId
+     * @return 集合
+     */
     @GetMapping("byGroup/{groupId}")
     public ResponseResult getByGroup(@PathVariable(value = "groupId") String groupId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         TbUser tbUser = tbUserService.get(username);
-        return new ResponseResult(ResponseResult.CodeStatus.OK, "查询成功", tbOrderService.getByGroupCheck(Long.valueOf(groupId), tbUser.getId()));
+        List<CheckOrderVO> byGroupCheck = tbOrderService.getByGroupCheck(Long.valueOf(groupId), tbUser.getId());
+        return new ResponseResult(ResponseResult.CodeStatus.OK, "查询成功", byGroupCheck);
     }
 
+    /**
+     * 确认一整个group的订单
+     *
+     * @param groupId group
+     * @return 成功与否
+     */
     @PutMapping("/{groupId}")
     public ResponseResult checkOrder(@PathVariable(value = "groupId") String groupId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         TbUser tbUser = tbUserService.get(username);
-        List<TbOrder> byGroup = tbOrderService.getByGroup(Long.valueOf(groupId));
+        List<CheckOrderVO> byGroupCheck = tbOrderService.getByGroupCheck(Long.valueOf(groupId), tbUser.getId());
+        if (byGroupCheck.size() == 0) {
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "异常操作！");
+        }
         try {
 //            根据group去更新订单状态
-            int i = tbOrderService.checkOrder(tbUser.getId(), Long.valueOf(groupId));
+            int i = tbOrderService.checkOrder(tbUser.getId(), Long.valueOf(groupId), byGroupCheck);
             if (i == 0) {
                 throw new BusinessException(ExceptionStatus.DATABASE_ERROR);
             }
             List<Long> goodsList = new ArrayList<>();
-            byGroup.forEach(item -> {
-                goodsList.add(item.getGoodsId());
+            byGroupCheck.forEach(item -> {
+                goodsList.add(Long.valueOf(item.getGoodsId()));
             });
 //            修改商品状态为已售出
             int i1 = tbItemService.changeGoodsStatus(goodsList, 2);
@@ -195,5 +214,15 @@ public class OrderController {
             mqUtils.checkOrderMessage(groupId);
             return new ResponseResult(ResponseResult.CodeStatus.FAIL, "出现未知错误");
         }
+    }
+
+    @GetMapping()
+    public ResponseResult getMyOrder(@RequestParam(value = "page", required = true, defaultValue = "1") Integer page,
+                                     @RequestParam(value = "size", required = true, defaultValue = "5") Integer size) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        TbUser tbUser = tbUserService.get(username);
+        PageInfo<TbOrder> myOrder = tbOrderService.getMyOrder(tbUser.getId(), page, size);
+        return new ResponseResult(ResponseResult.CodeStatus.OK, myOrder);
     }
 }
