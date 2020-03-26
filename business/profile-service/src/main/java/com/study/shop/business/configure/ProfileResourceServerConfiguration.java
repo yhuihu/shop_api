@@ -37,6 +37,7 @@ public class ProfileResourceServerConfiguration extends ResourceServerConfigurer
                 .authorizeRequests()
                 .antMatchers("/email/**").permitAll()
                 .antMatchers("/profile/register").permitAll()
+                .antMatchers("/profile/reset").permitAll()
                 .antMatchers("/chat").permitAll()
                 .antMatchers("/**").hasAuthority("USER");
     }

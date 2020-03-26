@@ -76,24 +76,3 @@ public class MyWebSocket extends TextWebSocketHandler {
         }
     }
 }
-
-//
-//
-//    static void redisSendToUser(MessageContact messageEntity) throws IOException {
-//        String key;
-//        if ("1".equals(messageEntity.getState())){
-//            key="consumer"+messageEntity.getCid();
-//        }else{
-//            key="shop"+messageEntity.getSid();
-//        }
-//        WebSocketSession webSocketSession = userSession.get(key);
-//        if (webSocketSession != null) {
-//            ObjectMapper mapper = new ObjectMapper();
-//            TextMessage returnMessage = new TextMessage(mapper.writeValueAsString(messageEntity));
-//            try {
-//                webSocketSession.sendMessage(returnMessage);
-//            } catch (Exception ignored) {
-//            }
-//        }
-//    }
-//}

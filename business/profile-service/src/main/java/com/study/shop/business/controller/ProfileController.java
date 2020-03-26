@@ -16,6 +16,7 @@ import com.study.shop.provider.dto.UserDTO;
 import com.study.shop.utils.SnowIdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -56,6 +57,7 @@ public class ProfileController {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "非法用户名！");
         }
         String redisCode = redisTemplate.opsForValue().get("register_" + userDTO.getEmail());
+        redisCode = getReplace(redisCode);
         if (redisCode == null) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "请先获取验证码！");
         } else if (!redisCode.equals(userDTO.getCode())) {
@@ -80,9 +82,15 @@ public class ProfileController {
         }
     }
 
-    @PostMapping("find")
+    @NotNull
+    private String getReplace(String redisCode) {
+        return redisCode.replace("\"", "");
+    }
+
+    @PostMapping("reset")
     public ResponseResult findUser(@RequestBody FindDTO findDTO) {
         String redisCode = redisTemplate.opsForValue().get("find_" + findDTO.getEmail());
+        redisCode = getReplace(redisCode);
         if (redisCode == null) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "请先获取验证码！");
         } else if (!redisCode.equals(findDTO.getCode())) {

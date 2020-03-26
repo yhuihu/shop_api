@@ -2,13 +2,12 @@ package com.study.shop.business.controller;
 
 import com.study.shop.commons.dto.ResponseResult;
 import com.study.shop.provider.api.TbUserService;
-import com.study.shop.provider.domain.TbUser;
 import com.study.shop.utils.EmailTool;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,7 +37,7 @@ public class EmailController {
     @Autowired
     RedisTemplate redisTemplate;
 
-    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4, 8, 1, TimeUnit.MINUTES,
+    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4, 8, 30, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(10), Executors.defaultThreadFactory(), new ThreadPoolExecutor.CallerRunsPolicy());
 
     /**
@@ -48,18 +47,19 @@ public class EmailController {
      */
     @PostMapping("/{email}")
     public ResponseResult sendEmail(@PathVariable(name = "email") @Valid @Email String email) {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         int byMail = tbUserService.getByMail(email);
         if (byMail > 0) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "该邮箱已存在！");
         }
-        if (redisTemplate.opsForValue().get("register_" + email) != null) {
+        if (valueOperations.get("register_" + email) != null) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "请勿重复获取验证码");
         }
         Runnable runnable = () -> {
             try {
                 String uuid = getUUID();
-                if (redisTemplate.opsForValue().get("register_" + email) == null) {
-                    redisTemplate.opsForValue().set("register_" + email, uuid, 5, TimeUnit.MINUTES);
+                if (valueOperations.get("register_" + email) == null) {
+                    valueOperations.set("register_" + email, uuid, 5, TimeUnit.MINUTES);
                     EmailTool.send(email, "注册平台验证码", uuid);
                 }
             } catch (Exception e) {
@@ -78,18 +78,19 @@ public class EmailController {
      */
     @PutMapping("/{email}")
     public ResponseResult findEmail(@PathVariable(name = "email") @Valid @Email String email) {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         int byMail = tbUserService.getByMail(email);
         if (byMail < 1) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "该邮箱不存在对应账号，请核实后重试！");
         }
-        if (redisTemplate.opsForValue().get("find_" + email) != null) {
+        if (valueOperations.get("find_" + email) != null) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "请勿重复获取验证码");
         }
         Runnable runnable = () -> {
             try {
                 String uuid = getUUID();
-                if (redisTemplate.opsForValue().get("find_" + email) == null) {
-                    redisTemplate.opsForValue().set("find_" + email, uuid, 5, TimeUnit.MINUTES);
+                if (valueOperations.get("find_" + email) == null) {
+                    valueOperations.set("find_" + email, uuid, 5, TimeUnit.MINUTES);
                     EmailTool.send(email, "找回密码", uuid);
                 }
             } catch (Exception e) {
@@ -109,12 +110,5 @@ public class EmailController {
             uuid.append(ch);
         }
         return uuid.toString();
-    }
-
-    @GetMapping("testRedis")
-    public void test(){
-        TbUser tbUser=new TbUser();
-        tbUser.setId(111111111111111L);
-        redisTemplate.convertAndSend("CHAT_CHANNEL",tbUser);
     }
 }
