@@ -39,7 +39,6 @@ public class SchedulerTask {
             Calendar c = Calendar.getInstance();
             Date date = new Date();
             c.setTime(date);
-//            c.set(Calendar.DATE, c.get(Calendar.DATE) - 1);
             c.add(Calendar.MINUTE, -30);
             Date time = c.getTime();
             Boolean orderScheduler;
@@ -54,7 +53,8 @@ public class SchedulerTask {
                     hashSetGroups.add(item.getGroupId());
                 });
                 hashSetGroups.forEach(item -> {
-                    tbOrderService.deleteByGroup(item);
+                    tbOrderService.changeOrderStatus(item, 5); //修改订单状态为关闭
+//                    tbOrderService.deleteByGroup(item);  直接删除订单
                 });
                 tbItemService.changeGoodsStatus(goodsList, 1);
             }

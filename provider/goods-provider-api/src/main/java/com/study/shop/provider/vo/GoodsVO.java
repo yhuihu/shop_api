@@ -57,7 +57,12 @@ public class GoodsVO {
     /**
      * 商品对应用户
      */
-    private Long userId;
+    private String userId;
+
+    /**
+     * （这里需要注意，在搜索商品的地方获取的是卖家的信息。在用户后台管理闲置物品中获取的是买家的信息）
+     */
+    private String buyerId;
 
     private String nickName;
 

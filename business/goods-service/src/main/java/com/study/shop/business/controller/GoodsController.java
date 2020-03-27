@@ -189,8 +189,8 @@ public class GoodsController {
             throw new BusinessException(ExceptionStatus.ACCOUNT_NOT_EXIST);
         }
         Long targetId = Long.valueOf(goodsId);
-        GoodDetailVO goodDetail = tbItemService.getGoodDetail(Long.valueOf(goodsId));
-        if (goodDetail.getStatus() == 2 || goodDetail.getStatus() == 3) {
+        GoodDetailVO goodDetail = tbItemService.getGoodDetail(targetId);
+        if (goodDetail == null) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "已售出或被拍下商品不可删除！");
         }
         int i = tbItemService.deleteGoods(tbUser.getId(), targetId);

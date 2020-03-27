@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.api.TbOrderService;
 import com.study.shop.provider.domain.TbOrder;
+import com.study.shop.provider.dto.OrderListDTO;
 import com.study.shop.provider.mapper.TbOrderMapper;
 import com.study.shop.provider.vo.CheckOrderVO;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.apache.dubbo.config.annotation.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +81,7 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Override
     public List<TbOrder> getTimeOutOrder(Date date) {
         Example example = new Example(TbOrder.class);
-        example.createCriteria().andLessThan("createTime", date);
+        example.createCriteria().andLessThan("createTime", date).andEqualTo("status", 0);
         return tbOrderMapper.selectByExample(example);
     }
 
@@ -94,10 +96,29 @@ public class TbOrderServiceImpl implements TbOrderService {
     }
 
     @Override
-    public PageInfo<TbOrder> getMyOrder(Long userId, Integer page, Integer size) {
+    public PageInfo<OrderListDTO> getMyOrder(Long userId, Integer page, Integer size) {
         Example example = new Example(TbOrder.class);
         example.createCriteria().andEqualTo("userId", userId);
         PageHelper.startPage(page, size);
-        return new PageInfo<>(tbOrderMapper.selectByExample(example));
+        List<OrderListDTO> tbOrders = tbOrderMapper.getMyOrder(userId);
+        return new PageInfo<>(tbOrders);
+    }
+
+    @Override
+    public int payOrder(Long orderId, Long userId, Long goodsId, BigDecimal price) {
+        TbOrder tbOrder = new TbOrder();
+        tbOrder.setStatus(2);
+        tbOrder.setPayment(price.doubleValue());
+        Example example = new Example(TbOrder.class);
+        example.createCriteria().andEqualTo("userId", userId).
+                andEqualTo("id", orderId).andEqualTo("goodsId", goodsId);
+        return tbOrderMapper.updateByExampleSelective(tbOrder, example);
+    }
+
+    @Override
+    public int deleteOrder(Long orderId, Long userId) {
+        Example example = new Example(TbOrder.class);
+        example.createCriteria().andEqualTo("userId", userId).andEqualTo("id", orderId).andEqualTo("status", 0);
+        return tbOrderMapper.deleteByExample(example);
     }
 }

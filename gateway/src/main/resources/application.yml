@@ -77,6 +77,13 @@ spring:
             - Path=/api/order/**
           filters:
             - StripPrefix=1
+        #        物流信息
+        - id: BUSSINESS-SHIPPING
+          uri: lb://goods
+          predicates:
+            - Path=/api/shipping/**
+          filters:
+            - StripPrefix=1
         #        购物车
         - id: BUSSINESS-CART
           uri: lb://goods

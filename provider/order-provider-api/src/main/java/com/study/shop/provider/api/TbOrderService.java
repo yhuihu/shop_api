@@ -2,8 +2,10 @@ package com.study.shop.provider.api;
 
 import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.domain.TbOrder;
+import com.study.shop.provider.dto.OrderListDTO;
 import com.study.shop.provider.vo.CheckOrderVO;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -79,7 +81,25 @@ public interface TbOrderService {
      * @param size   大小
      * @return {@link PageInfo}
      */
-    PageInfo<TbOrder> getMyOrder(Long userId, Integer page, Integer size);
+    PageInfo<OrderListDTO> getMyOrder(Long userId, Integer page, Integer size);
+
+    /**
+     * 支付订单
+     * @param orderId 订单编号
+     * @param userId 用户编号
+     * @param goodsId 商品编号
+     * @param price 价格
+     * @return 0,1
+     */
+    int payOrder(Long orderId, Long userId, Long goodsId, BigDecimal price);
+
+    /**
+     * 删除订单
+     * @param orderId 订单编号
+     * @param userId 用户编号
+     * @return 0,1
+     */
+    int deleteOrder(Long orderId,Long userId);
 }
 
 

@@ -14,6 +14,7 @@ import com.study.shop.provider.api.TbOrderService;
 import com.study.shop.provider.api.TbUserService;
 import com.study.shop.provider.domain.TbOrder;
 import com.study.shop.provider.domain.TbUser;
+import com.study.shop.provider.dto.OrderListDTO;
 import com.study.shop.provider.vo.CheckOrderVO;
 import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.utils.SnowIdUtils;
@@ -23,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -202,8 +204,8 @@ public class OrderController {
             byGroupCheck.forEach(item -> {
                 goodsList.add(Long.valueOf(item.getGoodsId()));
             });
-//            修改商品状态为已售出
-            int i1 = tbItemService.changeGoodsStatus(goodsList, 2);
+//            修改商品状态为待发货
+            int i1 = tbItemService.changeGoodsStatus(goodsList, 5);
             if (i1 == 0) {
                 throw new BusinessException(ExceptionStatus.DATABASE_ERROR);
             }
@@ -216,13 +218,64 @@ public class OrderController {
         }
     }
 
+    /**
+     * 获取我的订单
+     *
+     * @param page 页码
+     * @param size 单页数量
+     * @return list
+     */
     @GetMapping()
     public ResponseResult getMyOrder(@RequestParam(value = "page", required = true, defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", required = true, defaultValue = "5") Integer size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         TbUser tbUser = tbUserService.get(username);
-        PageInfo<TbOrder> myOrder = tbOrderService.getMyOrder(tbUser.getId(), page, size);
+        PageInfo<OrderListDTO> myOrder = tbOrderService.getMyOrder(tbUser.getId(), page, size);
         return new ResponseResult(ResponseResult.CodeStatus.OK, myOrder);
+    }
+
+    /**
+     * 支付订单
+     *
+     * @param id      订单编号
+     * @param goodsId 商品编号
+     * @return boolean
+     */
+    @PostMapping("/pay/{orderId}/{goodsId}")
+    public ResponseResult payOrder(@PathVariable(value = "orderId") String id, @PathVariable(value = "goodsId") String goodsId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        TbUser tbUser = tbUserService.get(username);
+        GoodDetailVO goodDetail = tbItemService.getGoodDetail(Long.valueOf(goodsId));
+        int i = tbOrderService.payOrder(Long.valueOf(id), tbUser.getId(), Long.valueOf(goodsId), goodDetail.getPrice());
+        if (i > 0) {
+            List<Long> longList = new ArrayList<>();
+            longList.add(Long.valueOf(goodsId));
+            tbItemService.changeGoodsStatus(longList, 5);
+        }
+        return new ResponseResult(ResponseResult.CodeStatus.OK);
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param orderId 订单编号
+     * @param goodsId 商品编号
+     * @return boolean
+     */
+    @DeleteMapping("/{orderId}/{goodsId}")
+    public ResponseResult buyerDeleteOrder(@PathVariable(value = "orderId") String orderId,
+                                           @PathVariable(value = "goodsId") String goodsId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        TbUser tbUser = tbUserService.get(username);
+        int i = tbOrderService.deleteOrder(Long.valueOf(orderId), tbUser.getId());
+        if (i > 0) {
+            List<Long> longList = new ArrayList<>();
+            longList.add(Long.valueOf(goodsId));
+            tbItemService.changeGoodsStatus(longList, 1);
+        }
+        return new ResponseResult(ResponseResult.CodeStatus.OK);
     }
 }

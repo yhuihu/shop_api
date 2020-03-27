@@ -1,6 +1,7 @@
 package com.study.shop.provider.mapper;
 
 import com.study.shop.provider.domain.TbOrder;
+import com.study.shop.provider.dto.OrderListDTO;
 import com.study.shop.provider.vo.CheckOrderVO;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
@@ -18,4 +19,11 @@ public interface TbOrderMapper extends Mapper<TbOrder> {
      * @return {@link CheckOrderVO}
      */
     List<CheckOrderVO> getCheckByGroupId(@Param("groupId") Long groupId, @Param("userId")Long userId);
+
+    /**
+     * 获取我的订单
+     * @param userId userId
+     * @return {@link OrderListDTO}
+     */
+    List<OrderListDTO> getMyOrder(Long userId);
 }

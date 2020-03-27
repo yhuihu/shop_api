@@ -63,7 +63,36 @@
         left join tb_item titem on torder.goods_id = titem.id
         where torder.group_id = #{groupId} and torder.user_id= #{userId}
     </select>
-    <select id="getGroupIdByCreateTimeLessThan" resultType="java.lang.Long">
-        select distinct group_id from tb_order where create_time &lt; #{nowTime}
+    <resultMap id="myOrder" type="com.study.shop.provider.dto.OrderListDTO">
+        <!--@mbg.generated generated on Thu Mar 19 22:02:59 GMT+08:00 2020.-->
+        <!--@Table tb_order-->
+        <id column="id" property="id"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="group_id" property="groupId"/>
+        <result column="title" property="title"/>
+        <result column="pay_type" jdbcType="INTEGER" property="payType"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime"/>
+        <result column="consign_time" jdbcType="TIMESTAMP" property="consignTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="shipping_name" jdbcType="VARCHAR" property="shippingName"/>
+        <result column="shipping_code" jdbcType="VARCHAR" property="shippingCode"/>
+        <result column="buyer_message" jdbcType="VARCHAR" property="buyerMessage"/>
+        <result column="buyer_comment" jdbcType="BOOLEAN" property="buyerComment"/>
+        <result column="buyer_name" jdbcType="VARCHAR" property="buyerName"/>
+        <result column="buyer_phone" jdbcType="VARCHAR" property="buyerPhone"/>
+        <result column="buyer_address" jdbcType="VARCHAR" property="buyerAddress"/>
+        <result column="image" property="image"/>
+    </resultMap>
+    <select id="getMyOrder" resultMap="myOrder" resultType="com.study.shop.provider.dto.OrderListDTO">
+        select
+        torder.id, pay_type, payment, goods_id, group_id, torder.`status`, create_time, torder.user_id, payment_time,
+        consign_time, end_time, shipping_name, shipping_code, buyer_message, buyer_comment,
+        buyer_name, buyer_phone, buyer_address ,titem.image, titem.title
+        from tb_order torder
+        left join tb_item titem on torder.goods_id = titem.id
+        order by create_time desc
     </select>
 </mapper>

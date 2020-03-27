@@ -101,7 +101,7 @@
         from `tb_item` as ti
         LEFT JOIN tb_item_desc td on ti.id=td.item_id
         LEFT JOIN tb_user tu on tu.id=ti.user_id
-        where ti.id = #{goodId} and ti.status = 1
+        where ti.id = #{goodId}
     </select>
     <select id="getCartDetail" resultMap="GoodsList">
         SELECT * from `tb_item` where id in
@@ -111,7 +111,19 @@
     </select>
     <select id="getMyGoods" resultType="com.study.shop.provider.vo.GoodsVO"
             parameterType="com.study.shop.provider.dto.MyGoodsDTO" resultMap="GoodsList">
-        SELECT * from `tb_item` where user_id = #{userId}
+        SELECT ti.id, ti.title, ti.sell_point, ti.price, ti.image, ti.classification_id, ti.status, ti.created, ti.updated,
+        ti.user_id, tu.nick_name, tu.id as buyerId,tu.icon
+        from `tb_item` as ti
+        left join tb_order t on ti.id = t.goods_id
+        left join tb_user tu on t.user_id = tu.id
+        where ti.user_id = #{userId}
+        <if test="status!=-1">
+            and ti.status=#{status}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and (ti.title like concat('%',#{keyword},'%') or ti.sell_point like concat('%',#{keyword},'%'))
+        </if>
+        order by ti.created desc
     </select>
     <select id="getLogGoodDetail" resultType="com.study.shop.provider.vo.GoodDetailVO" resultMap="GoodDetail">
         SELECT

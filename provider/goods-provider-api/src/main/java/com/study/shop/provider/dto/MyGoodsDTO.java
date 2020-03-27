@@ -21,9 +21,13 @@ public class MyGoodsDTO implements Serializable {
      */
     Integer size;
     /**
-     * 用户名
+     * 状态
      */
-    String username;
+    Integer status;
+    /**
+     * 关键字
+     */
+    String keyword;
     /**
      * 用户编号
      */
