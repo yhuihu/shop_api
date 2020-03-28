@@ -4,7 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.api.TbOrderService;
 import com.study.shop.provider.domain.TbOrder;
-import com.study.shop.provider.dto.OrderListDTO;
+import com.study.shop.provider.vo.OrderDetailVO;
+import com.study.shop.provider.vo.OrderListVO;
 import com.study.shop.provider.mapper.TbOrderMapper;
 import com.study.shop.provider.vo.CheckOrderVO;
 import lombok.extern.slf4j.Slf4j;
@@ -96,11 +97,11 @@ public class TbOrderServiceImpl implements TbOrderService {
     }
 
     @Override
-    public PageInfo<OrderListDTO> getMyOrder(Long userId, Integer page, Integer size) {
+    public PageInfo<OrderListVO> getMyOrder(Long userId, Integer page, Integer size) {
         Example example = new Example(TbOrder.class);
         example.createCriteria().andEqualTo("userId", userId);
         PageHelper.startPage(page, size);
-        List<OrderListDTO> tbOrders = tbOrderMapper.getMyOrder(userId);
+        List<OrderListVO> tbOrders = tbOrderMapper.getMyOrder(userId);
         return new PageInfo<>(tbOrders);
     }
 
@@ -120,5 +121,10 @@ public class TbOrderServiceImpl implements TbOrderService {
         Example example = new Example(TbOrder.class);
         example.createCriteria().andEqualTo("userId", userId).andEqualTo("id", orderId).andEqualTo("status", 0);
         return tbOrderMapper.deleteByExample(example);
+    }
+
+    @Override
+    public OrderDetailVO getOrderDetail(Long orderId) {
+        return tbOrderMapper.getOrderDetail(orderId);
     }
 }

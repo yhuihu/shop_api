@@ -14,7 +14,7 @@ import com.study.shop.provider.api.TbOrderService;
 import com.study.shop.provider.api.TbUserService;
 import com.study.shop.provider.domain.TbOrder;
 import com.study.shop.provider.domain.TbUser;
-import com.study.shop.provider.dto.OrderListDTO;
+import com.study.shop.provider.vo.OrderListVO;
 import com.study.shop.provider.vo.CheckOrderVO;
 import com.study.shop.provider.vo.GoodDetailVO;
 import com.study.shop.utils.SnowIdUtils;
@@ -231,7 +231,7 @@ public class OrderController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         TbUser tbUser = tbUserService.get(username);
-        PageInfo<OrderListDTO> myOrder = tbOrderService.getMyOrder(tbUser.getId(), page, size);
+        PageInfo<OrderListVO> myOrder = tbOrderService.getMyOrder(tbUser.getId(), page, size);
         return new ResponseResult(ResponseResult.CodeStatus.OK, myOrder);
     }
 
@@ -277,5 +277,10 @@ public class OrderController {
             tbItemService.changeGoodsStatus(longList, 1);
         }
         return new ResponseResult(ResponseResult.CodeStatus.OK);
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseResult getOrderDetail(@PathVariable(value = "orderId") String orderId) {
+        return new ResponseResult(ResponseResult.CodeStatus.OK, tbOrderService.getOrderDetail(Long.valueOf(orderId)));
     }
 }

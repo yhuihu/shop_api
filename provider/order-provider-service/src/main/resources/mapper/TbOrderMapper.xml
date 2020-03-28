@@ -63,7 +63,7 @@
         left join tb_item titem on torder.goods_id = titem.id
         where torder.group_id = #{groupId} and torder.user_id= #{userId}
     </select>
-    <resultMap id="myOrder" type="com.study.shop.provider.dto.OrderListDTO">
+    <resultMap id="myOrder" type="com.study.shop.provider.vo.OrderListVO">
         <!--@mbg.generated generated on Thu Mar 19 22:02:59 GMT+08:00 2020.-->
         <!--@Table tb_order-->
         <id column="id" property="id"/>
@@ -86,13 +86,48 @@
         <result column="buyer_address" jdbcType="VARCHAR" property="buyerAddress"/>
         <result column="image" property="image"/>
     </resultMap>
-    <select id="getMyOrder" resultMap="myOrder" resultType="com.study.shop.provider.dto.OrderListDTO">
+    <select id="getMyOrder" resultMap="myOrder" resultType="com.study.shop.provider.vo.OrderListVO">
         select
         torder.id, pay_type, payment, goods_id, group_id, torder.`status`, create_time, torder.user_id, payment_time,
         consign_time, end_time, shipping_name, shipping_code, buyer_message, buyer_comment,
-        buyer_name, buyer_phone, buyer_address ,titem.image, titem.title
+        buyer_name, buyer_phone, buyer_address ,titem.image, titem.title, titem.price as sellPrice
         from tb_order torder
         left join tb_item titem on torder.goods_id = titem.id
         order by create_time desc
+    </select>
+    <resultMap id="orderDetail" type="com.study.shop.provider.vo.OrderDetailVO">
+        <!--@mbg.generated generated on Thu Mar 19 22:02:59 GMT+08:00 2020.-->
+        <!--@Table tb_order-->
+        <id column="id" property="id"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="group_id" property="groupId"/>
+        <result column="title" property="title"/>
+        <result column="pay_type" jdbcType="INTEGER" property="payType"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime"/>
+        <result column="consign_time" jdbcType="TIMESTAMP" property="consignTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="shipping_name" jdbcType="VARCHAR" property="shippingName"/>
+        <result column="shipping_code" jdbcType="VARCHAR" property="shippingCode"/>
+        <result column="buyer_message" jdbcType="VARCHAR" property="buyerMessage"/>
+        <result column="buyer_comment" jdbcType="BOOLEAN" property="buyerComment"/>
+        <result column="buyer_name" jdbcType="VARCHAR" property="buyerName"/>
+        <result column="buyer_phone" jdbcType="VARCHAR" property="buyerPhone"/>
+        <result column="buyer_address" jdbcType="VARCHAR" property="buyerAddress"/>
+        <result column="image" property="image"/>
+    </resultMap>
+    <select id="getOrderDetail" resultMap="orderDetail" resultType="com.study.shop.provider.vo.OrderDetailVO">
+        SELECT
+        torder.id,torder.pay_type,torder.payment,torder.goods_id,torder.group_id,torder.`status`,torder.create_time,torder.user_id,torder.payment_time,torder.consign_time,
+        torder.end_time,torder.shipping_name,torder.shipping_code,torder.buyer_message,torder.buyer_comment,torder.buyer_name,torder.buyer_phone,torder.buyer_address,
+        titem.image,titem.title ,tuser.id as sellerId,tuser.nick_name as sellerName,tuser.icon as sellerIcon,titem.price as sellPrice
+        FROM
+        tb_order torder
+        LEFT JOIN tb_item titem ON torder.goods_id = titem.id
+        LEFT JOIN tb_user tuser ON tuser.id = titem.user_id
+        WHERE
+        torder.id=#{orderId}
     </select>
 </mapper>

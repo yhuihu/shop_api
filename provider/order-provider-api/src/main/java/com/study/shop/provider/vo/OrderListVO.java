@@ -1,7 +1,8 @@
-package com.study.shop.provider.dto;
+package com.study.shop.provider.vo;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  * @see com.study.shop.provider.dto
  **/
 @Data
-public class OrderListDTO {
+public class OrderListVO {
     /**
      * 订单id
      */
@@ -110,4 +111,9 @@ public class OrderListDTO {
      * 标题
      */
     private String title;
+
+    /**
+     * 售价
+     */
+    private BigDecimal sellPrice;
 }
