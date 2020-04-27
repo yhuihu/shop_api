@@ -88,12 +88,17 @@ public class TbOrderServiceImpl implements TbOrderService {
 
     @Override
     public int changeOrderStatus(Long groupId, Integer status) {
-        TbOrder tbOrder = new TbOrder();
-        tbOrder.setStatus(status);
-        Example example = new Example(TbOrder.class);
-        example.createCriteria().andEqualTo("groupId", groupId);
-        tbOrderMapper.updateByExampleSelective(tbOrder, example);
-        return 0;
+        try {
+            TbOrder tbOrder = new TbOrder();
+            tbOrder.setStatus(status);
+            Example example = new Example(TbOrder.class);
+            example.createCriteria().andEqualTo("groupId", groupId);
+            tbOrderMapper.updateByExampleSelective(tbOrder, example);
+            return 1;
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+            return 0;
+        }
     }
 
     @Override
@@ -126,5 +131,20 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Override
     public OrderDetailVO getOrderDetail(Long orderId) {
         return tbOrderMapper.getOrderDetail(orderId);
+    }
+
+    @Override
+    public int changeOrderStatusByOrderId(Long orderId, Integer status) {
+        try {
+            TbOrder tbOrder = new TbOrder();
+            tbOrder.setStatus(status);
+            Example example = new Example(TbOrder.class);
+            example.createCriteria().andEqualTo("id", orderId);
+            tbOrderMapper.updateByExampleSelective(tbOrder, example);
+            return 1;
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+            return 0;
+        }
     }
 }

@@ -108,6 +108,14 @@ public interface TbOrderService {
      * @return {@link OrderDetailVO}
      */
     OrderDetailVO getOrderDetail(Long orderId);
+
+    /**
+     * 根据订单编号修改订单状态
+     * @param orderId 订单编号
+     * @param status 状态
+     * @return 0,1
+     */
+    int changeOrderStatusByOrderId(Long orderId,Integer status);
 }
 
 
