@@ -22,4 +22,6 @@ public class ClassificationVO implements Serializable {
     private String label;
 
     List<ClassificationVO> children;
+
+    private Boolean isParent;
 }

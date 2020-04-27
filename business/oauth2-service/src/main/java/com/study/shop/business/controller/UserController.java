@@ -6,6 +6,7 @@ import com.study.shop.business.ExceptionStatus;
 import com.study.shop.business.dto.LoginInfo;
 import com.study.shop.business.dto.LoginParam;
 import com.study.shop.business.feign.ProfileFeign;
+import com.study.shop.commons.aop.annotation.Log;
 import com.study.shop.commons.dto.ResponseResult;
 import com.study.shop.provider.domain.TbUser;
 import com.study.shop.utils.MapperUtils;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -70,6 +74,7 @@ public class UserController {
     private RedisTemplate<String, String> redisTemplate;
 
     @PostMapping(value = "/login")
+    @Log("登录")
     public ResponseResult<Map<String, Object>> login(@RequestBody LoginParam loginParam) {
         Map<String, Object> result = Maps.newHashMap();
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginParam.getUsername());
@@ -100,7 +105,13 @@ public class UserController {
             String jsonString = Objects.requireNonNull(response.body()).string();
             Map<String, Object> jsonMap = MapperUtils.json2map(jsonString);
             String token = String.valueOf(jsonMap.get("access_token"));
+            List<String> roleList = new ArrayList<>();
+            OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(token);
+            oAuth2Authentication.getUserAuthentication().getAuthorities().forEach(item -> {
+                roleList.add(item.getAuthority());
+            });
             result.put("token", token);
+            result.put("role", roleList);
             redisTemplate.opsForValue().set(key, token);
         } catch (Exception e) {
             log.info("出现异常{}", e.getMessage());
@@ -150,5 +161,11 @@ public class UserController {
         );
         tokenStore.removeAccessToken(oAuth2AccessToken);
         return new ResponseResult<Void>(ResponseResult.CodeStatus.OK, "用户已注销");
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping()
+    public ResponseResult<Void> checkAdmin() {
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK);
     }
 }

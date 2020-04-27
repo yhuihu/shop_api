@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @ControllerAdvice
 public class BusinessExceptionHandler {
-
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<?> handlerException(HttpServletRequest request, Exception ex) {
         ResponseResult error = new ResponseResult();

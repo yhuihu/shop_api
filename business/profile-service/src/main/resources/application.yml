@@ -25,7 +25,23 @@ spring:
     sentinel:
       transport:
         dashboard: ${base.config.sentile.hostname}:${base.config.sentile.port}
-
+    stream:
+      bindings:
+        log:
+          consumer:
+            concurrency: 20
+          content-type: application/json
+          destination: logTopic
+          group: log-group
+      rocketmq:
+        binder:
+          name-server: 192.168.200.128:9876
+        #自定义的名称 对应spring.cloud.stream.bindings.output1
+        bindings:
+          log:
+            consumer:
+              broadcasting: false
+              tags: Logs
 security:
   oauth2:
     client:

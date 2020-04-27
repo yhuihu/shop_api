@@ -16,5 +16,6 @@
         <module>commons-dto</module>
         <module>commons-utils</module>
         <module>commons-provider</module>
+        <module>commons-aop</module>
     </modules>
 </project>

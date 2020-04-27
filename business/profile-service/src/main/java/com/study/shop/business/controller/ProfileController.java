@@ -8,6 +8,7 @@ import com.study.shop.business.dto.UserInfo;
 import com.study.shop.business.dto.params.IconParam;
 import com.study.shop.business.dto.params.PasswordParam;
 import com.study.shop.business.dto.params.ProfileParam;
+import com.study.shop.commons.aop.annotation.Log;
 import com.study.shop.commons.dto.ResponseResult;
 import com.study.shop.provider.api.TbUserService;
 import com.study.shop.provider.domain.TbUser;
@@ -87,6 +88,11 @@ public class ProfileController {
         return redisCode.replace("\"", "");
     }
 
+    /**
+     * 找回密码
+     * @param findDTO 实体
+     * @return ResponseResult
+     */
     @PostMapping("reset")
     public ResponseResult findUser(@RequestBody FindDTO findDTO) {
         String redisCode = redisTemplate.opsForValue().get("find_" + findDTO.getEmail());
@@ -161,6 +167,7 @@ public class ProfileController {
      * @return {@link ResponseResult}
      */
     @PostMapping(value = "modify/password")
+    @Log("修改密码")
     public ResponseResult<Void> modifyPassword(@RequestBody PasswordParam passwordParam) {
         // 获取认证信息上下文,可以根据token获取用户名
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -6,6 +6,7 @@ import com.study.shop.provider.api.TbItemDescService;
 import com.study.shop.provider.api.TbItemService;
 import com.study.shop.provider.domain.TbItem;
 import com.study.shop.provider.domain.TbItemDesc;
+import com.study.shop.provider.dto.AdminSearchGoodsDTO;
 import com.study.shop.provider.dto.GoodsSearchDTO;
 import com.study.shop.provider.dto.MyGoodsDTO;
 import com.study.shop.provider.mapper.TbItemMapper;
@@ -190,7 +191,8 @@ public class TbItemServiceImpl implements TbItemService {
         int goodsCount = list.size();
         int sellCount = 0;
         for (TbItem tbItem : list) {
-            if (tbItem.getStatus() == 2 || tbItem.getStatus() == 3) {
+            // 订单完成后状态将修改为2
+            if (tbItem.getStatus() == 2) {
                 sellCount++;
             }
         }
@@ -199,5 +201,25 @@ public class TbItemServiceImpl implements TbItemService {
         map.put("goodsCount", goodsCount);
         map.put("sellCount", sellCount);
         return map;
+    }
+
+    @Override
+    public PageInfo<GoodsVO> adminGetGoodsListByPage(AdminSearchGoodsDTO adminSearchGoodsDTO) {
+        if (adminSearchGoodsDTO.getPage() == null || adminSearchGoodsDTO.getPage() <= 0) {
+            adminSearchGoodsDTO.setPage(1);
+        }
+        if (adminSearchGoodsDTO.getSize() == null || adminSearchGoodsDTO.getSize() <= 0) {
+            adminSearchGoodsDTO.setSize(5);
+        }
+        PageHelper.startPage(adminSearchGoodsDTO.getPage(), adminSearchGoodsDTO.getSize());
+        List<GoodsVO> goodsVOS = tbItemMapper.adminGetGoodsList(adminSearchGoodsDTO);
+        return new PageInfo<>(goodsVOS);
+    }
+
+    @Override
+    public int adminDeleteGoods(Long id) {
+        Example example = new Example(TbItem.class);
+        example.createCriteria().andEqualTo("id", id).andEqualTo("status", "1");
+        return tbItemMapper.deleteByExample(example);
     }
 }

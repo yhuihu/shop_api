@@ -1,26 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.shop.provider.mapper.TbUserMapper">
-  <resultMap id="BaseResultMap" type="com.study.shop.provider.domain.TbUser">
-    <!--@mbg.generated generated on Tue Nov 19 09:29:45 GMT+08:00 2019.-->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
-    <result column="note" jdbcType="VARCHAR" property="note" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="role" jdbcType="VARCHAR" property="role" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="money" jdbcType="DOUBLE" property="money" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated generated on Tue Nov 19 09:29:45 GMT+08:00 2019.-->
-    id, username, `password`, icon, email, nick_name, note, create_time, update_time,
-    `status`, `role`, phone, address
-  </sql>
+    <resultMap id="BaseResultMap" type="com.study.shop.provider.domain.TbUser">
+        <!--@mbg.generated generated on Tue Nov 19 09:29:45 GMT+08:00 2019.-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="money" jdbcType="DOUBLE" property="money"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Tue Nov 19 09:29:45 GMT+08:00 2019.-->
+        id, username, `password`, icon, email, nick_name, note, create_time, update_time,
+        `status`, `role`, phone, address
+    </sql>
+    <resultMap id="adminUserList" type="com.study.shop.provider.vo.AdminUserVO">
+        <!--@mbg.generated generated on Tue Nov 19 09:29:45 GMT+08:00 2019.-->
+        <id column="id" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+    </resultMap>
+    <select id="adminGetUser" resultMap="adminUserList"
+            resultType="com.study.shop.provider.vo.AdminUserVO"
+            parameterType="com.study.shop.provider.dto.AdminSearchDTO">
+        select ti.id,ti.username,ti.email,ti.nick_name,ti.create_time,ti.status,ti.phone,ti.address
+        from `tb_user` ti where 1=1
+        <if test="status!=-1 and status!=null ">
+            and `status`=#{status}
+        </if>
+        <if test="keyword != null">
+            and (
+            ti.username like concat('%',#{keyword},'%')
+            or ti.nick_name like concat('%',#{keyword},'%')
+            )
+        </if>
+        <if test="startTime != null">
+            and ti.create_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and ti.create_time &lt;= #{endTime}
+        </if>
+    </select>
 </mapper>

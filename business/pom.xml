@@ -50,6 +50,11 @@
         </dependency>
         <dependency>
             <groupId>com.study</groupId>
+            <artifactId>commons-aop</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.study</groupId>
             <artifactId>configuration-feign</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

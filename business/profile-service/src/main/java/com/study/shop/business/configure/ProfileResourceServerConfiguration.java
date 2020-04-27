@@ -1,7 +1,9 @@
 package com.study.shop.business.configure;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -9,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
  * 资源服务器
@@ -21,6 +25,13 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class ProfileResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new RedisTokenStore(redisConnectionFactory);
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -39,6 +50,7 @@ public class ProfileResourceServerConfiguration extends ResourceServerConfigurer
                 .antMatchers("/profile/register").permitAll()
                 .antMatchers("/profile/reset").permitAll()
                 .antMatchers("/chat").permitAll()
+                .antMatchers("/user/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/**").hasAuthority("USER");
     }
 

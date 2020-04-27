@@ -1,6 +1,7 @@
 package com.study.shop.provider.mapper;
 
 import com.study.shop.provider.domain.TbItem;
+import com.study.shop.provider.dto.AdminSearchGoodsDTO;
 import com.study.shop.provider.dto.GoodsSearchDTO;
 import com.study.shop.provider.dto.MyGoodsDTO;
 import com.study.shop.provider.vo.GoodDetailVO;
@@ -60,4 +61,11 @@ public interface TbItemMapper extends Mapper<TbItem> {
      * @return
      */
     GoodDetailVO getLogGoodDetail(Long goodsId);
+
+    /**
+     * 管理员获取商品列表
+     * @param adminSearchGoodsDTO {@link AdminSearchGoodsDTO}
+     * @return {@link GoodsVO}
+     */
+    List<GoodsVO> adminGetGoodsList(AdminSearchGoodsDTO adminSearchGoodsDTO);
 }

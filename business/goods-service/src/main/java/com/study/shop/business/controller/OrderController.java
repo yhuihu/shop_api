@@ -7,6 +7,7 @@ import com.study.shop.business.mq.MqUtils;
 import com.study.shop.business.util.OrderDetail;
 import com.study.shop.business.util.OrderList;
 import com.study.shop.business.util.RedisLock;
+import com.study.shop.commons.aop.annotation.Log;
 import com.study.shop.commons.dto.ResponseResult;
 import com.study.shop.provider.api.TbCartService;
 import com.study.shop.provider.api.TbItemService;
@@ -78,6 +79,7 @@ public class OrderController {
      * @return {@link ResponseResult}
      */
     @PostMapping()
+    @Log("下单")
     public ResponseResult<String> createOrder(@RequestBody OrderList orderList) {
         List<String> goodsIds = new ArrayList<>();
         orderList.getOrderDetails().forEach(item -> {
@@ -186,6 +188,7 @@ public class OrderController {
      * @return 成功与否
      */
     @PutMapping("/{groupId}")
+    @Log("确认订单")
     public ResponseResult checkOrder(@PathVariable(value = "groupId") String groupId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -243,6 +246,7 @@ public class OrderController {
      * @return boolean
      */
     @PostMapping("/pay/{orderId}/{goodsId}")
+    @Log("确认订单")
     public ResponseResult payOrder(@PathVariable(value = "orderId") String id, @PathVariable(value = "goodsId") String goodsId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -265,6 +269,7 @@ public class OrderController {
      * @return boolean
      */
     @DeleteMapping("/{orderId}/{goodsId}")
+    @Log("删除订单")
     public ResponseResult buyerDeleteOrder(@PathVariable(value = "orderId") String orderId,
                                            @PathVariable(value = "goodsId") String goodsId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

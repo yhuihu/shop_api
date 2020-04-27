@@ -18,6 +18,7 @@
     <resultMap id="classificationMap" type="com.study.shop.provider.vo.ClassificationVO">
         <id column="id" property="value"/>
         <result column="name" jdbcType="VARCHAR" property="label"/>
+        <result column="is_parent" jdbcType="BOOLEAN" property="isParent"/>
         <collection property="children" ofType="com.study.shop.provider.vo.ClassificationVO" select="getClassificationList" column="id"/>
     </resultMap>
     <select id="getClassificationList" resultMap="classificationMap"

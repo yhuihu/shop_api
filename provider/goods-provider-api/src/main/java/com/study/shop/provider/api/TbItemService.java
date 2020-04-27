@@ -2,6 +2,7 @@ package com.study.shop.provider.api;
 
 import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.domain.TbItem;
+import com.study.shop.provider.dto.AdminSearchGoodsDTO;
 import com.study.shop.provider.dto.GoodsSearchDTO;
 import com.study.shop.provider.dto.MyGoodsDTO;
 import com.study.shop.provider.vo.GoodDetailVO;
@@ -105,4 +106,18 @@ public interface TbItemService {
      * @return Map集合
      */
     Map<String,Object> getOtherGoodsNumberAndSellCount(Long userId);
+
+    /**
+     * 管理员获取商品列表
+     * @param adminSearchGoodsDTO {@link AdminSearchGoodsDTO}
+     * @return {@link GoodsVO}
+     */
+    PageInfo<GoodsVO> adminGetGoodsListByPage(AdminSearchGoodsDTO adminSearchGoodsDTO);
+
+    /**
+     * 管理员删除商品
+     * @param id id
+     * @return 0,1
+     */
+    int adminDeleteGoods(Long id);
 }

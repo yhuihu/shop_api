@@ -118,6 +118,30 @@ spring:
             - Path=/api/communication/**
           filters:
             - StripPrefix=1
+        - id: BUSSINESS-ADMIN-USER
+          uri: lb://profile
+          predicates:
+            - Path=/api/admin-user/**
+          filters:
+            - StripPrefix=1
+        - id: BUSSINESS-ADMIN-LOG
+          uri: lb://profile
+          predicates:
+            - Path=/api/admin-log/**
+          filters:
+            - StripPrefix=1
+        - id: BUSSINESS-ADMIN-GOODS
+          uri: lb://goods
+          predicates:
+            - Path=/api/admin-goods/**
+          filters:
+            - StripPrefix=1
+        - id: BUSSINESS-ADMIN-CLASSIFICATION
+          uri: lb://goods
+          predicates:
+            - Path=/api/admin-classification/**
+          filters:
+            - StripPrefix=1
         - id: BUSINESS-WEBSOCKET
           uri: lb://profile
           predicates:

@@ -1,5 +1,7 @@
 package com.study.shop.business;
 
+import com.study.shop.commons.aop.aspect.LogAspect;
+import com.study.shop.commons.aop.configuration.RocketMQConfiguration;
 import com.study.shop.configuration.RedisConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @description //TODO
  * @date 2019-09-11
  **/
-@SpringBootApplication(scanBasePackageClasses = {OAuth2Application.class, RedisConfig.class})
+@SpringBootApplication(scanBasePackageClasses = {OAuth2Application.class, RedisConfig.class, RocketMQConfiguration.class, LogAspect.class})
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableCaching

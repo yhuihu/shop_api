@@ -1,10 +1,14 @@
 package com.study.shop.provider.service;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.github.pagehelper.PageInfo;
 import com.study.shop.provider.api.TbUserService;
 import com.study.shop.provider.domain.TbUser;
+import com.study.shop.provider.dto.AdminEditUserDTO;
+import com.study.shop.provider.dto.AdminSearchDTO;
 import com.study.shop.provider.mapper.TbUserMapper;
 import com.study.shop.provider.service.fallback.TbUserServiceFallback;
+import com.study.shop.provider.vo.AdminUserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -105,25 +109,52 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
+    public int findByPhone(String phone) {
+        Example example = new Example(TbUser.class);
+        example.createCriteria().andEqualTo("phone", phone);
+        List<TbUser> tbUsers = tbUserMapper.selectByExample(example);
+        if (tbUsers.size() > 0) {
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
     public int findUser(String email, String password) {
         Example example = new Example(TbUser.class);
         example.createCriteria().andEqualTo("email", email);
         TbUser tbUser = tbUserMapper.selectOneByExample(example);
         tbUser.setPassword(passwordEncoder.encode(password));
-        try{
+        try {
             tbUserMapper.updateByPrimaryKeySelective(tbUser);
             return 1;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return 0;
         }
     }
 
-    /**
-     * 初始化用户对象
-     *
-     * @param tuser {@link TbUser}
-     */
+    @Override
+    public PageInfo<AdminUserVO> adminGetUser(AdminSearchDTO adminSearchDTO) {
+        TbLogServiceImpl.initPageParams(adminSearchDTO);
+        List<AdminUserVO> list = tbUserMapper.adminGetUser(adminSearchDTO);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public int adminEditUser(AdminEditUserDTO adminEditUserDTO) {
+        TbUser tbUser = tbUserMapper.selectByPrimaryKey(Integer.valueOf(adminEditUserDTO.getUserId()));
+        tbUser.setPhone(adminEditUserDTO.getPhone());
+        tbUser.setEmail(adminEditUserDTO.getEmail());
+        tbUser.setStatus(adminEditUserDTO.getStatus());
+        try {
+            return tbUserMapper.updateByPrimaryKeySelective(tbUser);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return 0;
+        }
+    }
+
     private void initUmsAdmin(TbUser tuser) {
         // 初始化创建时间
         tuser.setCreateTime(new Date());
