@@ -29,6 +29,7 @@ public class GoodsResourceServerConfiguration extends ResourceServerConfigurerAd
                 .antMatchers("/order/**").hasAuthority("USER")
                 .antMatchers("/admin-classification/**").hasAuthority("ADMIN")
                 .antMatchers("/admin-goods/**").hasAuthority("ADMIN")
+                .antMatchers("/admin-order/**").hasAuthority("ADMIN")
                 .antMatchers("/shipping/**").hasAuthority("USER")
                 .antMatchers("/**").permitAll();
     }

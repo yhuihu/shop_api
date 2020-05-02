@@ -6,6 +6,8 @@ import com.study.shop.provider.dto.AdminEditUserDTO;
 import com.study.shop.provider.dto.AdminSearchDTO;
 import com.study.shop.provider.vo.AdminUserVO;
 
+import java.util.List;
+
 /**
  * @author Admin
  */
@@ -109,4 +111,10 @@ public interface TbUserService {
      * @return 0,1
      */
     int adminEditUser(AdminEditUserDTO adminEditUserDTO);
+
+    /**
+     * 获取所有用户
+     * @return user
+     */
+    List<TbUser> getAllUser();
 }

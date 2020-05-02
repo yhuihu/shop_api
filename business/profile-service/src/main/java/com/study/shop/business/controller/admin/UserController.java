@@ -13,6 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * @author Tiger
  * @date 2020-03-29
@@ -32,7 +40,41 @@ public class UserController {
     @GetMapping("init")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseResult getUserInit() {
-        return new ResponseResult(ResponseResult.CodeStatus.OK);
+        List<TbUser> allUser = tbUserService.getAllUser();
+        Map<String, Object> map = new HashMap<>();
+        map.put("count", allUser.size());
+        Calendar cld = Calendar.getInstance(Locale.CHINA);
+        cld.setFirstDayOfWeek(Calendar.MONDAY);
+        List<Integer> list = new ArrayList<>();
+        list.add(getCount(allUser, cld));
+        cld.setFirstDayOfWeek(Calendar.TUESDAY);
+        list.add(getCount(allUser, cld));
+        cld.setFirstDayOfWeek(Calendar.WEDNESDAY);
+        list.add(getCount(allUser, cld));
+        cld.setFirstDayOfWeek(Calendar.THURSDAY);
+        list.add(getCount(allUser, cld));
+        cld.setFirstDayOfWeek(Calendar.FRIDAY);
+        list.add(getCount(allUser, cld));
+        cld.setFirstDayOfWeek(Calendar.SATURDAY);
+        list.add(getCount(allUser, cld));
+        cld.setFirstDayOfWeek(Calendar.SUNDAY);
+        list.add(getCount(allUser, cld));
+        map.put("weekUserCount", list);
+        return new ResponseResult(ResponseResult.CodeStatus.OK, map);
+    }
+
+    public Integer getCount(List<TbUser> allUser, Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date dayStart = calendar.getTime();
+        calendar.set(Calendar.HOUR, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        Date dayEnd = calendar.getTime();
+        return Long.valueOf(allUser.stream().filter((s) -> s.getCreateTime().compareTo(dayStart) >= 0 && s.getCreateTime().compareTo(dayEnd) <= 0).count()).intValue();
     }
 
     /**

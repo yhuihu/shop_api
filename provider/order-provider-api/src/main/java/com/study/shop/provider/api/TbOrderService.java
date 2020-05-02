@@ -116,6 +116,12 @@ public interface TbOrderService {
      * @return 0,1
      */
     int changeOrderStatusByOrderId(Long orderId,Integer status);
+
+    /**
+     * 所有订单
+     * @return all
+     */
+    List<TbOrder> getAllOrder();
 }
 
 

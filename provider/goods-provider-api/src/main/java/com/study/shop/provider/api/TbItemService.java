@@ -120,4 +120,10 @@ public interface TbItemService {
      * @return 0,1
      */
     int adminDeleteGoods(Long id);
+
+    /**
+     * 管理员获取所有内容
+     * @return TbItem
+     */
+    List<TbItem> getAllItem();
 }

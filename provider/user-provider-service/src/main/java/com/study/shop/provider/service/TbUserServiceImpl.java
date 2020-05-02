@@ -155,6 +155,11 @@ public class TbUserServiceImpl implements TbUserService {
         }
     }
 
+    @Override
+    public List<TbUser> getAllUser() {
+        return tbUserMapper.selectAll();
+    }
+
     private void initUmsAdmin(TbUser tuser) {
         // 初始化创建时间
         tuser.setCreateTime(new Date());

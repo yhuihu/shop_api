@@ -147,4 +147,9 @@ public class TbOrderServiceImpl implements TbOrderService {
             return 0;
         }
     }
+
+    @Override
+    public List<TbOrder> getAllOrder() {
+        return tbOrderMapper.selectAll();
+    }
 }

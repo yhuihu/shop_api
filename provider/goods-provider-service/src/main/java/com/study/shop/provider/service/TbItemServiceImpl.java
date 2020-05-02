@@ -222,4 +222,9 @@ public class TbItemServiceImpl implements TbItemService {
         example.createCriteria().andEqualTo("id", id).andEqualTo("status", "1");
         return tbItemMapper.deleteByExample(example);
     }
+
+    @Override
+    public List<TbItem> getAllItem() {
+        return tbItemMapper.selectAll();
+    }
 }
