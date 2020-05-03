@@ -48,6 +48,7 @@ public class TbLogServiceImpl implements TbLogService {
             criteria.andLessThanOrEqualTo("createDate", adminSearchDTO.getEndTime());
         }
         initPageParams(adminSearchDTO);
+        example.orderBy("createDate").desc();
         List<TbLog> tbLogs = tbLogMapper.selectByExample(example);
         return new PageInfo<>(tbLogs);
     }

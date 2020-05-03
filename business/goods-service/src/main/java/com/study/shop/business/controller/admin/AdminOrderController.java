@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Tiger
@@ -34,6 +33,13 @@ public class AdminOrderController {
         List<TbOrder> allOrder = tbOrderService.getAllOrder();
         Map<String, Object> map = new HashMap<>();
         map.put("count", allOrder.size());
+        Double allMoney = 0.00;
+        for (TbOrder tbOrder : allOrder) {
+            if (tbOrder.getPayment() != null) {
+                allMoney += tbOrder.getPayment();
+            }
+        }
+        map.put("moneyCount", allMoney);
         List<Integer> countValue = new ArrayList<>();
         List<Double> moneyValue = new ArrayList<>();
         Calendar cld = Calendar.getInstance(Locale.CHINA);
@@ -74,7 +80,13 @@ public class AdminOrderController {
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.MILLISECOND, 999);
         Date dayEnd = calendar.getTime();
-        return tbItems.stream().filter((s) -> s.getEndTime().compareTo(dayStart) >= 0 && s.getEndTime().compareTo(dayEnd) <= 0).collect(Collectors.toList());
+        List<TbOrder> list = new ArrayList<>();
+        for (TbOrder s : tbItems) {
+            if (s.getEndTime() != null && s.getEndTime().compareTo(dayStart) >= 0 && s.getEndTime().compareTo(dayEnd) <= 0) {
+                list.add(s);
+            }
+        }
+        return list;
     }
 
     public void setValue(List<Integer> countValue, List<Double> moneyValue, List<TbOrder> tbOrders) {

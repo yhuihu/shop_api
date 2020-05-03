@@ -113,6 +113,7 @@ public class UserController {
             result.put("token", token);
             result.put("role", roleList);
             redisTemplate.opsForValue().set(key, token);
+            redisTemplate.opsForValue().set("userName:"+token, loginParam.getUsername());
         } catch (Exception e) {
             log.info("出现异常{}", e.getMessage());
             return new ResponseResult<>(ResponseResult.CodeStatus.OK, "登录超时", null);

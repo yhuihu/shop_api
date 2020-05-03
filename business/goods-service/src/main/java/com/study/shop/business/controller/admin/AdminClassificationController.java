@@ -41,6 +41,8 @@ public class AdminClassificationController {
         tbClassification.setSortOrder(Integer.valueOf(classificationDTO.getStatus()));
         if (classificationDTO.getParentId() != null && !"".equals(classificationDTO.getParentId())) {
             tbClassification.setParentId(Long.valueOf(classificationDTO.getParentId()));
+        }else{
+            tbClassification.setParentId(0L);
         }
         int flag = tbClassificationService.addClassification(tbClassification);
         if (flag == 1) {
@@ -55,12 +57,13 @@ public class AdminClassificationController {
     public ResponseResult updateClassification(@RequestBody ClassificationDTO classificationDTO) {
         TbClassification tbClassification = new TbClassification();
         BeanUtils.copyProperties(classificationDTO, tbClassification);
-        tbClassification.setSortOrder(Integer.valueOf(classificationDTO.getStatus()));
+        tbClassification.setSortOrder(classificationDTO.getSortOrder());
         tbClassification.setId(Long.valueOf(classificationDTO.getId()));
         if (classificationDTO.getParentId() != null && !"".equals(classificationDTO.getParentId())) {
             tbClassification.setParentId(Long.valueOf(classificationDTO.getParentId()));
         }
         tbClassification.setIsParent("1".equals(classificationDTO.getIsParent()));
+        tbClassification.setStatus(Integer.valueOf(classificationDTO.getStatus()));
         int flag = tbClassificationService.updateClassification(tbClassification);
         if (flag == 1) {
             return new ResponseResult<>(ResponseResult.CodeStatus.OK, "更新成功", tbClassification);
